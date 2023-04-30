@@ -15,7 +15,7 @@ Télécharger sur votre téléphone l'appli expo
 <View style={CSS.PdpNomPrenom}>
                 <Image source={{uri : props.url_pdp}} style={{width: 70, height: 70 , borderRadius : '50%'}}/>
                 <Text style={{color :"white", fontWeight :'bold' ,marginLeft :'2%'}}> {props.prenom} {props.nom}  </Text>
-            </View>
+</View>
 
 
 #46a094

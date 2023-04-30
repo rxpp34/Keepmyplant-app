@@ -21,7 +21,7 @@ function Map({navigation,route})
     useEffect(() => {
        axios({  // POUR TROUVER UNE PLANTE SELON LA VILLE ET LES DATES
             method : "GET",
-            url : "http://codx.fr:8080/Search_plante_by_location_and_date/"+_Ville+"/"+_Niveau+"/null/null"
+            url : "http://codx.fr:8080/Search_plante_by_location_and_date/Montpellier/3/null/null"
           }).then((response) => {
             setAnnonce(response.data)
           }).catch((err) => {
@@ -32,7 +32,7 @@ function Map({navigation,route})
 
     return(
         <View style={CSS.MapView}>
-            <Pressable style={CSS.PressableRetourRecherche} onPress={() => navigation.navigate("RechercheMap")}>
+            <Pressable style={CSS.PressableRetourRecherche} onPress={() => navigation.goBack()}>
                     <Text style={{color :"white",fontSize : 22}}> &lt; Modifier ma recherche </Text>
             </Pressable>
 
@@ -61,8 +61,8 @@ function Map({navigation,route})
 
             <ScrollView style={CSS.ViewCard}>
                 {Annonce.map((item) => {
-                    return (<CardMap Date_Fin={item.dateFin} Date_Debut={item.dateDebut} ville={item.ville}
-                        url_pdp={item.photodeprofil} idUser={item.idUser}
+                    return (<CardMap Date_Fin={item.dateFin} Date_Debut={item.dateDebut} ville={item.ville} expertise={item.idNiveauExpertiseRequis}
+                        url_pdp={item.photodeprofil} idUser={item.idUser} description={item.description} cycle={item.idCycleCompteRendu}
                         nom={item.nom} prenom={item.prenom} mail={item.mail} reference={item.reference}/>)
                 })}
 

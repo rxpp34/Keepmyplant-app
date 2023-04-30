@@ -1,9 +1,11 @@
 import react, { useEffect, useState } from "react";
 import { Text, View,Image,StyleSheet,TextInput, Button,Pressable,TouchableWithoutFeedback,Dimensions} from "react-native";
 import axios from "axios"
+import {useNavigation} from '@react-navigation/native';
 
 function CardMap(props) 
 {
+    const navigation  = useNavigation();
     const [Photo,setPhoto]=useState([])
 
     useEffect(() => {
@@ -16,9 +18,22 @@ function CardMap(props)
     
     }, [])
 
+    function GoToReserve() 
+    {
+        navigation.navigate("ReserveAnnonce",
+                            {_nom : props.nom,
+                            _prenom : props.prenom,
+                            _mail : props.mail,
+                            _urlPhoto : props.url_pdp,
+                            _date_debut: props.Date_Debut,
+                            _date_fin : props.Date_Fin,
+                            _description : props.description,
+                            _cycle : props.cycle,
+                            _expertise : props.expertise})
+    }
 
     return(
-        <View style={CSS.MainView}>
+        <Pressable style={CSS.MainView} onPress={() => {GoToReserve()}}>
             <View style={CSS.ViewPhoto}>
                 {Photo.map((item) => {
                     const temp=Dimensions.get('screen').width-(0.068*Dimensions.get('screen').width)
@@ -27,16 +42,16 @@ function CardMap(props)
                 })}
 
             </View>
-            <Text style={{color :'#c4e8c2' , fontWeight : 'bold' ,marginLeft : "3%", marginTop :10,fontSize : 20,marginBottom : 10}}> {props.prenom} {props.nom} </Text>
-            <Text style={{color :'#c4e8c2' , fontWeight : 'bold' ,marginLeft : "3%", marginTop :10,fontSize : 20}}> {props.ville}</Text>
+            <Text style={{color :'#46a094' , fontWeight : 'bold' ,marginLeft : "3%", marginTop :10,fontSize : 20,marginBottom : 10}}> {props.prenom} {props.nom} </Text>
+            <Text style={{color :'#46a094' , fontWeight : 'bold' ,marginLeft : "3%", marginTop :10,fontSize : 20}}> {props.ville}</Text>
             <Text style={{color :'#c4e8c2' , 
                           fontWeight : 'bold' ,
                           marginLeft : "3%",
                           fontSize : 20}}> Du <Text style={CSS.DateText}> {props.Date_Debut} </Text> Au <Text style={CSS.DateText}> {props.Date_Fin}</Text> 
             </Text>
-            <Text style={{color :'#c4e8c2' , fontWeight : 'bold' ,marginLeft : "3%", marginTop :10,fontSize : 20}}> Nombre de plante à garder : <Text> {Photo.length} </Text> </Text>
-            <Text style={{color :'#c4e8c2' , fontWeight : 'bold' ,marginLeft : "3%", marginTop :40,fontSize : 20}}> Reference : {props.reference}</Text>
-        </View>
+            <Text style={{color :'#46a094' , fontWeight : 'bold' ,marginLeft : "3%", marginTop :70,fontSize : 20}}> Nombre de plante à garder : <Text> {Photo.length} </Text> </Text>
+            <Text style={{color :'#46a094' , fontWeight : 'bold' ,marginLeft : "3%", marginTop :40,fontSize : 20}}> Reference : {props.reference}</Text>
+        </Pressable>
     )
 }
 
@@ -45,13 +60,13 @@ const CSS=StyleSheet.create({
         width : '96%' , 
         height : 380, 
         borderWidth : 3,
-        borderColor : '#c4e8c2',
+        borderColor : 'white',
         marginBottom : 10,
         borderRadius : 5 , 
         backgroundColor : "white",
-        shadowColor: '#171717',
-        shadowOffset: {width: 2, height: 4},
-        shadowOpacity: 0.3,
+        shadowColor: '#46a094',
+        shadowOffset: {width: 5, height: 5},
+        shadowOpacity: 0.6,
         shadowRadius: 3,
         
     } ,

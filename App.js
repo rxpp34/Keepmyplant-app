@@ -9,6 +9,7 @@ import RechercheMap from "./Screen/RechercheMap" ;
 import MesPlantes  from "./Screen/MesPlantes"
 import AddAnnonce from "./Screen/AddAnnonce"
 import Map from "./Screen/Map"
+import ReserveAnnonce from "./Screen/ReserveAnnonce"
 import Authentification from "./Screen/Authentification";
 
 const Tab = createBottomTabNavigator();
@@ -57,9 +58,9 @@ function Tabs ({navigation}) {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false}}>
-        <Stack.Screen name="Authentification" component={Authentification} />
         <Stack.Screen name="HomeTabs" component={Tabs} />
         <Stack.Screen name="Map" component={Map} />
+        <Stack.Screen name="ReserveAnnonce" component={ReserveAnnonce} />
       </Stack.Navigator>
     </NavigationContainer>
   );

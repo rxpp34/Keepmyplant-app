@@ -1,8 +1,6 @@
 import react from "react";
 import { Text, View,Image,StyleSheet,TextInput, Button,Pressable,TouchableWithoutFeedback,Keyboard } from "react-native";
 import { useState } from "react";
-import CardMap from "../Component/Card_Map";
-import {Picker} from '@react-native-picker/picker';
 import DateTimePicker from  "@react-native-community/datetimepicker" ;
 import axios from "axios"
 

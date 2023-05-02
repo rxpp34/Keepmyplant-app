@@ -93,8 +93,11 @@ app.get("/GetAdresse/:mail", function (req, res) {
 })
 
 app.get("/LoadPostAnnonces/:mail", function (req, res) {
-    conx.query
-    ("SELECT Annonces.*, Users.idUser, (SELECT pseudo FROM Users WHERE idUser IN (SELECT idUser FROM Reservations WHERE Reservations.idAnnonce = Annonces.idAnnonce)) AS pseudoTest FROM Annonces, Users WHERE Annonces.idUser = Users.idUser AND mail =?",
+    conx.query(
+        "SELECT Annonces.*, Users.idUser, " +
+        "(SELECT pseudo FROM Users WHERE idUser IN (SELECT idUser FROM Reservations WHERE Reservations.idAnnonce = Annonces.idAnnonce AND Reservations.validation = 1)) AS pseudoTest, " +
+        "(SELECT mail FROM Users WHERE idUser IN (SELECT idUser FROM Reservations WHERE Reservations.idAnnonce = Annonces.idAnnonce AND Reservations.validation = 1)) AS mailTest " +
+        "FROM Annonces, Users WHERE Annonces.idUser = Users.idUser AND mail = ?",
         req.params.mail, (err, result) => {
             if (err) throw err;
             res.send(result);
@@ -142,24 +145,31 @@ app.get("/GetVisitUserByPseudo/:pseudo", function (req, res) {
     })
 })
 
-app.get("/GetUserWhoKeepMyPlants/:pseudo", function (req, res) {
-    conx.query("SELECT Annonces.*, Reservations.*, Users.* FROM Annonces INNER JOIN Reservations ON Annonces.idAnnonce = Reservations.idAnnonce INNER JOIN Users ON Users.idUser = Reservations.idUser WHERE Users.mail = ?", req.params.pseudo,(err, result) => {
+//----------------------------------//
+//------ Page visite de profil Botaniste -----//
+//----------------------------------//
+app.get("/GetConseilsByBotaniste/:mail", function (req, res) {
+    conx.query
+    ("SELECT Conseils.*,TypesPlante.idTypePlante,TypesPlante.libelle,TypesPlante.urlPhoto FROM Users,Conseils,TypesPlante WHERE Users.idUser = Conseils.idUser AND Conseils.idTypePlante = TypesPlante.idTypePlante AND Users.mail = ?",
+        req.params.mail,(err, result) => {
         if (err) throw err;
         res.send(result);
     })
 })
 
 //----------------------------------//
-//------ Page visite de profil Botaniste -----//
+//------- Page AllConseilsForTypePlante -------//
 //----------------------------------//
-app.get("/GetConseilsByBotaniste/:mail", function (req, res) {
+
+app.get("/GetConseilAndUserByTypePlant/:idTypePlante", function (req, res) {
     conx.query
-    ("SELECT Conseils.*,TypesPlante.* FROM Users,Conseils,TypesPlante WHERE Users.idUser = Conseils.idUser AND Conseils.idTypePlante = TypesPlante.idTypePlante AND Users.mail = ?",
-        req.params.mail,(err, result) => {
-        if (err) throw err;
+    ('SELECT Conseils.*,Users.pseudo,Users.mail FROM Conseils,Users WHERE Conseils.idUser = Users.idUser AND Conseils.idTypePlante = ?',
+        req.params.idTypePlante, (err, result) => {
+        if(err) throw err;
         res.send(result);
-    })
+        })
 })
+
 
 //----------------------------------//
 //------- Page recherche/map -------//
@@ -172,7 +182,7 @@ app.get("/GetConseilsByBotaniste/:mail", function (req, res) {
 //----------------------------------//
 app.get("/GetTypePlants", function (req, res) {
     conx.query
-    ("SELECT * FROM TypePlante", (err, result) => {
+    ("SELECT * FROM TypesPlante", (err, result) => {
         if (err) throw err;
         res.send(result);
     })
@@ -203,7 +213,7 @@ app.get("/GetConseilByTypePlant/:idTypePlant", function (req, res) {
         })
 })
 
-app.post("/CreateConseil/:mail/:titre/:description/:idTypePlant", function (req, res){
+app.post("/CreateConseil/:mail/:idTypePlant", function (req, res){
     conx.query
     ("SELECT idUser FROM Users WHERE mail = ?",
         req.params.mail, (err, result)=>{
@@ -214,12 +224,12 @@ app.post("/CreateConseil/:mail/:titre/:description/:idTypePlant", function (req,
                 const userId = result[0].idUser;
                 conx.query
                 ("INSERT INTO Conseils (titre, description, idTypePlante, idUser) VALUES (?, ?, ?, ?)",
-                    [req.params.titre, req.params.description, req.params.idTypePlant, userId],
+                    [req.body.titre, req.body.description, req.params.idTypePlant, userId],
                     (err, result)=>{
                         if (err) {
                             throw err;
                         } else {
-                            res.send(result);
+                            res.send("OK");
                         }
                     }
                 );
@@ -247,6 +257,7 @@ app.delete("/DeleteConseilById/:idConseil", function (req, res) {
             res.send(result);
         })
 })
+
 //----------------------------------//
 //-------- Page mes plantes --------//
 //----------------------------------//
@@ -266,17 +277,6 @@ app.get("/GetPlantByUser/:mail", function (req, res) {
         res.send(result);
     })
 })
-
-app.get("/GetUrlPhotoByUserID/:iduser", function (req, res) {
-    conx.query
-    ("SELECT UrlPhoto FROM plantes WHERE idUser=?",
-        req.params.iduser, (err, result) => {
-        if (err) throw err;
-        res.send(result);
-    })
-})
-
-
 
 app.get("/GetPlanteById/:idplante", function (req, res) {
     conx.query
@@ -364,6 +364,32 @@ app.delete("/DeleteReservationById/:id_reservation", function (req, res) {
 //----------------------------------------------------------//
 //---------- Page Annonce + Recheche de plantes----------//
 //----------------------------------------------------------//
+app.post("/SendRequestReservation/:idUser/:idAnnonce", function (req, res) {
+    conx.query("INSERT INTO Reservations (idUser, idAnnonce) VALUES (?, ?)",
+    [req.params.idUser,req.params.idAnnonce],
+    (err, result)=>{
+        if (err) {
+            throw err;
+        } else {
+            res.send("OK");
+        }
+    }
+);
+})
+
+app.post("/SendAbonnementByBotaniste/:idUser_1/:idAnnonce", function (req, res) {
+    conx.query("INSERT INTO Annonces (idUser) VALUES (?)",
+    [req.params.idUser_1],
+    (err, result)=>{
+        if (err) {
+            throw err;
+        } else {
+            res.send("OK");
+        }
+    }
+);
+})
+
 app.post("/CreateAnnonceByUser/:mail/:dateDebut/:dateFin/:description/:idNiveauExpertiseRequis/:idCycleCompteRendu", function (req, res) {
     // Récupérer l'id de l'utilisateur à partir de son email
     conx.query("SELECT idUser FROM Users WHERE mail=?", req.params.mail, (err, result) => {
@@ -423,6 +449,7 @@ app.get("/NiveauExpertiseRequis", function (req, res) {
         res.send(result);
     })
 })
+
 app.get("/CycleCompteRendu", function (req, res) {
     conx.query
     ("SELECT idCycleCompteRendu, nombre FROM CycleCompteRendu", (err, result) => {
@@ -430,6 +457,7 @@ app.get("/CycleCompteRendu", function (req, res) {
         res.send(result);
     })
 })
+
 app.get("/Search_plante_by_location_and_date/:ville/:niveauExpertise/:DateDebut/:DateFin", function (req, res) { // POUR RECUPERER LES ANNONCES POSTÉ DANS UNE VILLE ET DATE DONNÉE 
     if(req.params.DateDebut==="null" && req.params.DateFin==="null")
     {
@@ -532,11 +560,12 @@ app.get("/GetKeeperByPhotos/:idAnnonce", function (req, res) {
 
 app.get("/GetAnnoncesReserved/:mail", function (req, res) {
     conx.query(
-        "SELECT Annonces.* " +
+        "SELECT Annonces.*,Reservations.numero " +
         "FROM Annonces, Users, Reservations " +
         "WHERE Reservations.idAnnonce = Annonces.idAnnonce " +
         "AND Reservations.idUser = Users.idUser " +
         "AND Annonces.active = 1 " +
+        "AND Reservations.validation = 1 " +
         "AND Users.mail = ? ",
         req.params.mail,
         (err, result) => {
@@ -560,17 +589,14 @@ app.get("/GetProprioByAnnonce/:idAnnonce", function (req, res) {
     );
 });
 
-app.post("/AddPhotoForFollow/:mail/:idAnnonce", function (req, res){
+app.post("/AddPhotoForFollow/:mail/:idAnnonce/:idPhoto", function (req, res){
     conx.query
     ("SELECT idUser FROM Users WHERE mail=?",req.params.mail, (err, result)=>{
         if (err) {
             throw err;
         } else {
-            const userId = result[0].idUser;
-            const datePoste = new Date();
-
-            conx.query("INSERT INTO Photos (urlPhoto, datePoste, idAnnonce, idUser) VALUES (?, ?, ?, ?)",
-                [req.body.urlphoto, datePoste, req.params.idAnnonce,userId],
+            conx.query("INSERT INTO Photos (urlPhoto) VALUES (?)",
+                [req.body.urlphoto],
                 (err, result)=>{
                     if (err) {
                         throw err;
@@ -582,6 +608,99 @@ app.post("/AddPhotoForFollow/:mail/:idAnnonce", function (req, res){
         }
     });
 });
+
+app.post("/UpdatePhotoForFollow/:idPhoto", function(req, res){
+    const { urlphoto } = req.body;
+    const { idPhoto } = req.params;
+    conx.query(
+        "UPDATE Photos SET urlPhoto=? WHERE idPhoto=?",
+        [urlphoto, idPhoto],
+        (err, result)=>{
+            if (err) {
+                throw err;
+            } else {
+                res.send("OK");
+            }
+        }
+    );
+});
+
+
+//----------------------------------//
+//----- Page annonces suivies Botaniste ------//
+//----------------------------------//
+app.get("/GetFollowAnnonce/:mail", function (req, res) {
+    conx.query(
+        "SELECT Annonces.* " +
+        "FROM Annonces, Users " +
+        "WHERE Users.idUser = Annonces.idUser_1 " +
+        "AND Annonces.active = 1 " +
+        "AND Users.mail = ? ",
+        req.params.mail,
+        (err, result) => {
+            if (err) throw err;
+            res.send(result);
+        }
+    );
+});
+
+app.post("/AddCommentsForFollow/:mail/:idAnnonce/:idPhoto", function (req, res){
+    conx.query
+    ("SELECT idUser FROM Users WHERE mail=?",req.params.mail, (err, result)=>{
+        if (err) {
+            throw err;
+        } else {
+            const userId = result[0].idUser;
+
+            conx.query("INSERT INTO Commentaires (description, idUser) VALUES (?, ?)",
+                [req.body.description,userId],
+                (err, result)=>{
+                    if (err) {
+                        throw err;
+                    } else {
+                        const idCommentaire = result.insertId;
+                        const idPhoto = req.params.idPhoto;
+                        conx.query("UPDATE Photos SET idCommentaire=? WHERE idPhoto=?",
+                            [idCommentaire, idPhoto],
+                            (err, result)=>{
+                                if (err) {
+                                    throw err;
+                                } else {
+                                    res.send("OK");
+                                }
+                            }
+                        );
+                    }
+                }
+            );
+        }
+    });
+});
+
+//-----------------------------------------------------------------//
+//---------------------GESTION DES DEMANDES------------------------//
+//-----------------------------------------------------------------//
+
+app.get("/GetReservationAnnonce/:mail", function (req, res) {
+    conx.query("SELECT Users.nom, Users.prenom, Users.telephone, Users.photodeprofil, Reservations.* FROM Reservations, Users, Annonces WHERE Annonces.idAnnonce = Reservations.idAnnonce AND Reservations.idUser = Users.idUser AND Annonces.idUser = (SELECT idUser FROM Users WHERE mail = ?)" ,req.params.mail, (err, result) => {
+        if (err) throw err;
+        res.send(result);
+    })
+})
+
+app.post("/UpdateReservationAccepter/:idReservation",function (req,res)  {
+    conx.query("UPDATE Reservations SET validation = 1 WHERE validation IS NULL AND idReservation = ?", req.params.idReservation,(err,result) => {
+        if(err) throw err ;
+        res.send("OK")
+    })
+})
+
+app.post("/UpdateReservationRefuser/:idReservation",function (req,res)  {
+    conx.query("UPDATE Reservations SET validation = 0 WHERE validation IS NULL AND idReservation = ?", req.params.idReservation,(err,result) => {
+        if(err) throw err ;
+        res.send("OK")
+    })
+})
 
 
 //----------------------------------//

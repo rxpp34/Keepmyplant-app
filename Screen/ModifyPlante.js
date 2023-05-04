@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { TouchableOpacity, Text, View, TextInput, StyleSheet, Pressable, ScrollView, Image } from "react-native";
 import axios from "axios";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import * as ImagePicker from 'expo-image-picker';
 
 function ModifyPlante() {
     const navigation = useNavigation();
@@ -14,6 +15,7 @@ function ModifyPlante() {
     const [listTypePlante, setListTypePlante] = useState([]);
     const [selectedTypePlante, setSelectedTypePlante] = useState(null);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [selectedPhotoUri, setSelectedPhotoUri] = useState("");
 
     const handleToggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
@@ -23,6 +25,28 @@ function ModifyPlante() {
         setSelectedTypePlante(typePlante);
         setTypePlante(typePlante.libelle);
         setIsDropdownOpen(false);
+    };
+
+    const handleChoosePhoto = async () => {
+        let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+        if (permissionResult.granted === false) {
+            console.log('Permission to access camera roll is required!');
+            return;
+        }
+
+        let pickerResult = await ImagePicker.launchImageLibraryAsync();
+
+        if (!pickerResult.cancelled) {
+            setSelectedPhotoUri(pickerResult.uri); // Enregistre le lien de la photo sélectionnée
+
+            // Enregistrer le lien dans le stockage local de l'application
+            try {
+                await AsyncStorage.setItem('selectedPhotoUri', pickerResult.uri);
+            } catch (error) {
+                console.log('Error saving selected photo URI:', error);
+            }
+        }
     };
 
     useEffect(() => {
@@ -45,7 +69,7 @@ function ModifyPlante() {
                 const idTypePlante = resp.data[0].idTypePlante;
                 axios
                     .post(`http://codx.fr:8080/UpdatePlante/${idPlante}/${nom}/${description}/${idTypePlante}`, {
-                        url: _url,
+                        url: selectedPhotoUri || _url,
                     })
                     .then((resp) => {
                         if (resp.data === "OK") {
@@ -60,12 +84,10 @@ function ModifyPlante() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>
-                Modification Plante
-            </Text>
+            <Text style={styles.title}>Modification Plante</Text>
             <View style={styles.formContainer}>
                 <View style={styles.photoCard}>
-                    <Image source={{ uri: _url }} style={styles.image} />
+                    <Image source={{ uri: selectedPhotoUri || _url }} style={styles.image} />
                 </View>
                 <View>
                     <Text style={styles.label}>Nom</Text>
@@ -96,8 +118,13 @@ function ModifyPlante() {
                     )}
                 </View>
 
-                <View>
-                    <TextInput style={styles.input} value={_url} onChangeText={setUrl} placeholder="URL de l'image" />
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Photo')} style={styles.button}>
+                        <Text style={styles.buttonText}>Photo</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={handleChoosePhoto} style={styles.button}>
+                        <Text style={styles.buttonText}>Choisir photo</Text>
+                    </TouchableOpacity>
                 </View>
 
                 <View style={styles.buttonContainer}>

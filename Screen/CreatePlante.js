@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity, ScrollView, StyleSheet, Pressable } from 'react-native';
+import { View, Text, TextInput, Image, TouchableOpacity, ScrollView, StyleSheet, Pressable, AsyncStorage } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
@@ -48,15 +48,23 @@ function CreatePlante() {
         let pickerResult = await ImagePicker.launchImageLibraryAsync();
 
         if (!pickerResult.cancelled) {
-            setImageUrl(pickerResult.uri);
+            setImageUrl(pickerResult.uri); // Enregistre le lien de la photo sélectionnée
+
+            // Enregistrer le lien dans le stockage local de l'application
+            try {
+                await AsyncStorage.setItem('selectedPhotoUri', pickerResult.uri);
+            } catch (error) {
+                console.log('Error saving selected photo URI:', error);
+            }
         }
     };
 
-    function SubmitPlante() {
-        const encodedUrl = encodeURIComponent(urlPhoto);
+    const SubmitPlante = async () => {
+        const selectedPhotoUri = await AsyncStorage.getItem('selectedPhotoUri'); // Récupère l'URL enregistrée
+
         axios({
             method: 'POST',
-            url: `http://codx.fr:8080/CreatePlanteByUser/alicia.lefebvre@gmail.com/${Nom}/${Description}/${encodedUrl}/${selectedTypePlante.idTypePlante}`,
+            url: `http://codx.fr:8080/CreatePlanteByUser/alicia.lefebvre@gmail.com/${Nom}/${Description}/${selectedPhotoUri}/${selectedTypePlante.idTypePlante}`,
         })
             .then((resp) => {
                 if (resp.data === 'OK') {
@@ -66,7 +74,7 @@ function CreatePlante() {
             .catch((error) => {
                 console.log(error);
             });
-    }
+    };
 
     return (
         <View style={{ flex: 1, paddingHorizontal: 20, paddingTop: 100 }}>

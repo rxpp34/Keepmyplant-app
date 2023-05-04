@@ -38,7 +38,7 @@ function Photo() {
         if (image) {
             try {
                 await MediaLibrary.createAssetAsync(image);
-                alert('Picture saved!');
+                alert('Photo sauvegardé!');
                 setImage(null);
             } catch (e) {
                 console.log(e);

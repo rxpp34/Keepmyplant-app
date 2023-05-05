@@ -13,6 +13,7 @@ import ReserveAnnonce from "./Screen/ReserveAnnonce";
 import CreatePlante from "./Screen/CreatePlante";
 import ModifyPlante from "./Screen/ModifyPlante";
 import Photo from "./Screen/Photo";
+import MesAnnonces from "./Screen/MesAnnonces";
 import Authentification from "./Screen/Authentification";
 
 const Tab = createBottomTabNavigator();
@@ -77,6 +78,7 @@ function App({ navigation }) {
                 <Stack.Screen name="CreatePlante" component={CreatePlante} />
                 <Stack.Screen name="ModifyPlante" component={ModifyPlante} />
                 <Stack.Screen name="Photo" component={Photo} />
+                <Stack.Screen name="MesAnnonces" component={MesAnnonces} />
             </Stack.Navigator>
         </NavigationContainer>
     );

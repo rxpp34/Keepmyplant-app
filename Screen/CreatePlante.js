@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity, ScrollView, StyleSheet, Pressable, AsyncStorage } from 'react-native';
+import { View, Text, TextInput, Image, TouchableOpacity, ScrollView, StyleSheet, Pressable } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 function CreatePlante() {
     const navigation = useNavigation();
@@ -62,10 +64,10 @@ function CreatePlante() {
     const SubmitPlante = async () => {
         const selectedPhotoUri = await AsyncStorage.getItem('selectedPhotoUri'); // Récupère l'URL enregistrée
 
-        axios({
-            method: 'POST',
-            url: `http://codx.fr:8080/CreatePlanteByUser/alicia.lefebvre@gmail.com/${Nom}/${Description}/${selectedPhotoUri}/${selectedTypePlante.idTypePlante}`,
-        })
+        axios
+            .post(`http://codx.fr:8080/CreatePlanteByUser/alicia.lefebvre@gmail.com/${Nom}/${Description}/${selectedTypePlante.idTypePlante}`, {
+                url: selectedPhotoUri,
+            })
             .then((resp) => {
                 if (resp.data === 'OK') {
                     navigation.navigate('Mes Plantes');

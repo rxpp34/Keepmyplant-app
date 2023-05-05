@@ -11,10 +11,12 @@ function Profil({ route }) {
         <View style={CSS.MainView}>
             <Text style={CSS.title}> Mon Compte </Text>
 
-            <View style={CSS.ViewDemande}>
-                <Image source={require('../assets/Demande.png')} style={{ width: 96, height: 96 }} />
-                <Text style={CSS.TextDemande} > Mes demandes de gardinages </Text>
-            </View>
+            <TouchableOpacity onPress={() => navigation.navigate('MesDemandes')}>
+                <View style={CSS.ViewDemande}>
+                    <Image source={require('../assets/Demande.png')} style={{ width: 96, height: 96 }} />
+                    <Text style={CSS.TextDemande} > Mes demandes de gardinages </Text>
+                </View>
+            </TouchableOpacity>
 
             <TouchableOpacity onPress={() => navigation.navigate('MesAnnonces')}>
                 <View style={CSS.ViewAnnonce}>

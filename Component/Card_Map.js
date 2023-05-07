@@ -6,6 +6,8 @@ import {useNavigation} from '@react-navigation/native';
 function CardMap(props) 
 {
     const navigation  = useNavigation();
+
+    
     const [Photo,setPhoto]=useState([])
 
     useEffect(() => {

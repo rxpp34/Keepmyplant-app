@@ -41,7 +41,7 @@ function Annonce(props) {
 
                     </View>
                     <View style={styles.separator}></View>
-                    <Text style={styles.label}>Gardée par: {props.pseudoTest}</Text>
+                    <Text style={styles.label}> <Text style={{fontWeight : 'bold'}}> Gardée par: </Text> {props.pseudoTest}</Text>
                     <Text style={styles.expertise}>{props.niveauExpertiseString}</Text>
                 </View>
             </View>
@@ -52,20 +52,20 @@ function Annonce(props) {
 const styles = StyleSheet.create({
     container: {
         borderWidth: 1,
-        borderColor: "black",
+        borderColor: "white",
         borderRadius: 10,
         backgroundColor: "white",
         marginBottom: 20,
         marginLeft: 5,
         marginRight: 5,
-        elevation: 3,
-        shadowColor: "#000",
+        shadowColor: '#46a094',
         shadowOffset: {
             width: 0,
-            height: 2,
+            height: 5,
         },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
+        shadowOpacity: 0.34,
+        shadowRadius: 6.27,
+        elevation: 10,
     },
     ViewPhoto: {
         width: "98%",
@@ -90,19 +90,22 @@ const styles = StyleSheet.create({
     dateContainer: {
         flexDirection: "row",
         alignItems: "center",
+        justifyContent: "center",
         marginBottom: 10,
-        alignSelf: "center",
+        marginTop: 5,
     },
     dateBox: {
-        backgroundColor: "#E0F2E9",
+        backgroundColor: "#46a094",
         borderWidth: 1,
-        borderColor: "black",
+        borderColor: "#46a094",
         borderRadius: 5,
         padding: 5,
     },
     dateText: {
         fontSize: 14,
-        color: "black",
+        color: "white",
+        textAlign: "center",
+        marginTop: 5,
     },
     content: {
         marginTop: 10,
@@ -116,6 +119,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 16,
         color: "black",
+        marginTop : 10
     },
     separator: {
         height: 1,

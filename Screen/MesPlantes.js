@@ -33,10 +33,8 @@ function MesPlantes() {
 
     return (
         <View style={styles.container}>
-            <Text style={{ marginTop: 75, marginLeft: "5%", fontSize: 32, fontWeight: "bold", color: "#46a094" }}>
-                Mes plantes
-            </Text>
-            <View style={[styles.addButtonContainer, { marginBottom: 5 }]}>
+            <Text style={styles.title}> Mes Plantes </Text>
+            <View style={[styles.addButtonContainer, { marginBottom: 20 }]}>
                 <Pressable
                     style={styles.addButton}
                     onPress={() => {
@@ -48,7 +46,7 @@ function MesPlantes() {
             </View>
 
 
-            <ScrollView>
+            <ScrollView style={{padding : 20}}>
                 {PlantesList.map((item) => {
                     return (
                         <View key={item.idPlante} style={{ marginTop: 5 }}>
@@ -73,7 +71,7 @@ function MesPlantes() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
+
     },
     addButtonContainer: {
         marginTop: 50,
@@ -81,7 +79,7 @@ const styles = StyleSheet.create({
     },
     addButton: {
         cursor: "pointer",
-        paddingHorizontal: 56,
+        paddingHorizontal: 40,
         height: 45,
         borderRadius: 7,
         backgroundColor: "#6BBD99",
@@ -105,6 +103,14 @@ const styles = StyleSheet.create({
         fontWeight: "400",
         fontSize: 16,
         textAlign: "center",
+    },
+    title:
+    {
+        fontSize: 42,
+        color: "#46a094",
+        fontWeight: "bold",
+        marginTop: 50,
+        paddingTop : 20
     },
 });
 

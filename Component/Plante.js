@@ -60,7 +60,7 @@ function Plante(props) {
 
     return (
         <View style={[styles.container, { marginBottom: 20 }]}>
-            <View style={[styles.cardContent, { borderColor: "lightgreen", borderWidth: 2 }]}>
+            <View style={styles.cardContent}>
                 <View style={styles.photoCard}>
                     <Image source={{ uri: props.url }} style={styles.image} />
                 </View>
@@ -68,17 +68,16 @@ function Plante(props) {
                 <View style={styles.content}>
                     <Text style={styles.name}>{props.nom}</Text>
                     <Text style={styles.description}>{props.description}</Text>
-                    <Text style={styles.libelle}>{libelle}</Text>
                 </View>
             </View>
 
             <View style={styles.optionCard}>
-                <TouchableOpacity title="Modifier" onPress={() => GoToModif()}>
-                    <Text style={styles.modifierButton}>Modifier</Text>
+                <TouchableOpacity  title="Supprimer" onPress={() => SupprimerPlante()}>
+                    <Image source={require('../assets/delete.png')} style={styles.modifierButton}/>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => SupprimerPlante()} style={styles.supprimerButton}>
-                    <Text style={styles.buttonText}>Supprimer</Text>
+                <TouchableOpacity title="Modifier" onPress={() => GoToModif()}>
+                    <Image source={require('../assets/Edit.png')} style={styles.supprimerButton}/>
                 </TouchableOpacity>
             </View>
         </View>
@@ -87,20 +86,29 @@ function Plante(props) {
 
 const styles = StyleSheet.create({
     container: {
-        borderRadius: 5,
+        borderRadius: 8,
         backgroundColor: "white",
-        padding: 10,
+        shadowColor: '#46a094',
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowOpacity: 0.34,
+        shadowRadius: 6.27,
+        elevation: 10,
     },
     cardContent: {
         flexDirection: "column",
         marginBottom: 10,
-        padding: 10,
+        borderColor : '#46a094',
+
+
     },
     photoCard: {
-        marginRight: 10,
         width: "100%",
         height: 200,
-        borderRadius: 8,
+        borderTopLeftRadius: 8,
+        borderTopRightRadius: 8,
         overflow: "hidden",
     },
     image: {
@@ -110,15 +118,19 @@ const styles = StyleSheet.create({
     },
     content: {
         flex: 1,
-        marginTop: 20, // Ajustez l'espacement selon vos besoins
+        marginTop: 20, // Ajustez l'espacement selon vos besoins,
+        paddingHorizontal : 10
     },
     name: {
         fontSize: 20,
         fontWeight: "bold",
         marginBottom: 5,
+        color: "rgb(0, 151, 93)",
     },
     description: {
         marginBottom: 5,
+        color : "#6BBD99",
+        fontWeight : "bold"
     },
     libelle: {
         color: "rgb(0, 151, 93)",
@@ -127,51 +139,18 @@ const styles = StyleSheet.create({
     },
     optionCard: {
         flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "flex-end",
+        marginRight : 15,
+        marginBottom : 10
     },
     supprimerButton: {
-        margin: 5,
-        marginBottom: 10,
-        paddingHorizontal: 16,
-        height: 35,
-        borderRadius: 7,
-        backgroundColor: '#8C3A3A',
-        color: '#fff',
-        fontWeight: '400',
-        fontSize: 14,
-        shadowColor: 'rgba(0, 0, 0, 0.1)',
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-        shadowOpacity: 1,
-        shadowRadius: 14,
-        elevation: 4,
-        justifyContent: 'center', // Centrer verticalement
-        alignItems: 'center', // Centrer horizontalement
+        height: 38,
+        width : 38
+      
     },
     modifierButton: {
-        marginLeft: 5,
-        marginTop: 5,
-        marginBottom: 10,
-        paddingHorizontal: 16,
-        height: 35,
-        lineHeight: 35, // Mise à jour de la valeur de lineHeight
-        borderRadius: 7,
-        backgroundColor: '#8E8E8E',
-        color: '#fff',
-        fontWeight: '400',
-        fontSize: 16,
-        shadowColor: 'rgba(0, 0, 0, 0.1)',
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-        shadowOpacity: 1,
-        shadowRadius: 14,
-        elevation: 4,
-        justifyContent: 'center',
-        alignItems: 'center',
+        height: 38,
+        width : 38
     }
 });
 

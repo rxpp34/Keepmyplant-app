@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     },
     formContainer: {
         borderWidth: 1,
-        borderColor: 'black',
+        borderColor: '#e0f3e0',
         backgroundColor: '#e0f3e0',
         borderRadius: 10,
         padding: 20,
@@ -171,8 +171,6 @@ const styles = StyleSheet.create({
         height: 200,
         borderRadius: 10,
         overflow: 'hidden',
-        borderWidth: 1,
-        borderColor: 'black',
         marginBottom: 20,
         alignSelf: 'center',
     },

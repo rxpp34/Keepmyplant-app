@@ -2,6 +2,7 @@ import react, { useEffect, useState } from "react";
 import { Text, View,Image,StyleSheet,TextInput, Button,Pressable,TouchableWithoutFeedback,Dimensions} from "react-native";
 import axios from "axios"
 import {useNavigation} from '@react-navigation/native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 function CardMap(props) 
 {
@@ -23,7 +24,10 @@ function CardMap(props)
     function GoToReserve() 
     {
         navigation.navigate("ReserveAnnonce",
-                            {_nom : props.nom,
+                            {
+                            _idAnnonce : props.idAnnonce,
+                            _iduser : props.idUser,
+                            _nom : props.nom,
                             _prenom : props.prenom,
                             _mail : props.mail,
                             _urlPhoto : props.url_pdp,
@@ -53,6 +57,11 @@ function CardMap(props)
             </Text>
             <Text style={{color :'#46a094' , fontWeight : 'bold' ,marginLeft : "3%", marginTop :70,fontSize : 20}}> Nombre de plante à garder : <Text> {Photo.length} </Text> </Text>
             <Text style={{color :'#46a094' , fontWeight : 'bold' ,marginLeft : "3%", marginTop :40,fontSize : 20}}> Reference : {props.reference}</Text>
+
+            <Pressable style={CSS.PressableButtonDemande} onPress={() => {GoToReserve()}}>
+                    <Text style={{color :"#18c924",fontSize : 22,padding : 5,fontWeight :'bold',textAlign :'center'}}> Détail et Réservation</Text>
+            </Pressable>
+             
         </Pressable>
     )
 }
@@ -60,17 +69,17 @@ function CardMap(props)
 const CSS=StyleSheet.create({
     MainView : {
         width : '96%' , 
-        height : 380, 
+        height : 480, 
         borderWidth : 3,
         borderColor : 'white',
-        marginBottom : 10,
+        marginBottom : 20,
         borderRadius : 5 , 
         backgroundColor : "white",
         shadowColor: '#46a094',
-        shadowOffset: {width: 5, height: 5},
-        shadowOpacity: 0.6,
-        shadowRadius: 3,
-        
+        shadowOffset: {width: 0, height: 18},
+        shadowOpacity: 0.32,
+        shadowRadius: 20,
+
     } ,
 
     PdpNomPrenom : {
@@ -96,6 +105,19 @@ const CSS=StyleSheet.create({
         display : "flex",
         flexDirection : "row",
         justifyContent :"space-around"
+    }, 
+    PressableButtonDemande : 
+    {
+        marginTop : 30,
+        marginLeft : '20%',
+        borderWidth : 3 ,
+        width :'65%',
+        textAlign :'center',
+        backgroundColor :"white",
+        borderColor : "#18c924",
+        borderRadius :7, 
+        marginBottom : 70,
+        
     }
 })
 

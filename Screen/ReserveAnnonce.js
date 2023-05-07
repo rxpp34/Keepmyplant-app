@@ -22,6 +22,22 @@ function ReserveAnnonce (props)
         })
     } ,[])
     
+
+    function MakeReservation () 
+    {
+        
+        axios({
+            method: 'POST',
+            url: "http://codx.fr:8080/SendRequestReservation/"+route.params._iduser+"/"+route.params._idAnnonce
+        }).then((response) => {
+            if(response.data==="OK")
+            {
+                alert("RESERVATION OK")
+            }
+        })
+  
+    }
+
     return(
         <ScrollView style={CSS.MainView}>
             <Pressable style={CSS.PressableRetourRetour} onPress={() => navigation.goBack()}> 
@@ -70,7 +86,7 @@ function ReserveAnnonce (props)
 
             <Text style={{color : "#7d7d7d",fontSize : 24,fontWeight : "light",marginLeft :'3%',marginTop : 22,fontStyle :'italic'}}> Vous voulez vous occuper de ces plantes ? Faites votre de demande dès maintenant ! </Text>
 
-            <Pressable style={CSS.PressableButtonDemande} onPress={() => navigation.goBack()}>
+            <Pressable style={CSS.PressableButtonDemande} onPress={() => {MakeReservation()}}>
                     <Text style={{color :"#18c924",fontSize : 22,padding : 5,fontWeight :'bold',textAlign :'center'}}> Faire ma demande </Text>
             </Pressable>
 

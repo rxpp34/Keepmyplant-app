@@ -11,6 +11,15 @@ function MonCompte({ route }) {
         <View style={CSS.MainView}>
             <Text style={CSS.title}> Mon Compte </Text>
 
+            <TouchableOpacity onPress={() => navigation.navigate('Profil')}>
+                <View style={CSS.ViewInfoPerso}>
+                    <Image source={require('../assets/Info.png')} style={{ width: 48, height: 48 }} />
+                    <Text style={CSS.TextInfoPerso} > Informations personnelles </Text>
+                </View>
+            </TouchableOpacity>
+
+            <View style={CSS.VerticalLine} />
+
             <TouchableOpacity onPress={() => navigation.navigate('MesDemandes')}>
                 <View style={CSS.ViewDemande}>
                     <Image source={require('../assets/Demande.png')} style={{ width: 96, height: 96 }} />
@@ -32,19 +41,14 @@ function MonCompte({ route }) {
 
             <View style={CSS.VerticalLine} />
 
-            <TouchableOpacity onPress={() => navigation.navigate('Profil')}>
-                <View style={CSS.ViewInfoPerso}>
-                    <Image source={require('../assets/Info.png')} style={{ width: 48, height: 48 }} />
-                    <Text style={CSS.TextInfoPerso} > Informations personnelles </Text>
-                </View>
-            </TouchableOpacity>
+            
 
             <View style={CSS.ViewInfoPerso}>
                 <Image source={require('../assets/Password.png')} style={{ width: 48, height: 48 }} />
                 <Text style={CSS.TextInfoPerso} > Réinitialiser mot de passe</Text>
             </View>
 
-            <View style={CSS.VerticalLine} />
+            
 
             <Pressable style={CSS.Logout} >
                 <Text style={CSS.TextGoButton}> Se déconnecter </Text>
@@ -80,7 +84,7 @@ const CSS = StyleSheet.create({
         backgroundColor: 'white',
         borderColor: "white",
         borderRadius: 7,
-        marginTop: 50,
+        marginTop: 20,
         shadowColor: '#46a094',
         shadowOffset: { width: 0, height: 10 },
         shadowOpacity: 0.32,
@@ -132,7 +136,7 @@ const CSS = StyleSheet.create({
     VerticalLine: {
         borderWidth: 1,
         borderColor: "#46a094",
-        marginTop: 30,
+        marginTop: 20,
         width: "90%",
         marginLeft: '5%'
     },

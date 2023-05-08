@@ -1,24 +1,200 @@
 import react from "react";
-import { Text, View, Image, StyleSheet, TextInput, Button, Pressable, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from "react-native";
+import { Text, View,Image,StyleSheet,TextInput, Button,Pressable,TouchableWithoutFeedback,Keyboard } from "react-native";
+import { useState ,useEffect} from "react";
+import DateTimePicker from  "@react-native-community/datetimepicker" ;
+import axios from "axios"
 import { useNavigation } from "@react-navigation/native";
-import { useState,useEffect} from "react";
 
-function Profil () 
+
+
+function InfoPerso () 
 {
-    const navigation = useNavigation();
+    const navigation=useNavigation() ; 
+    const [idUser,setidUser]=useState()
+    const [Nom,setNom]=useState("") ;
+    const [Prenom,setPrenom]=useState("")
+    const [Telephone,setTelephone]=useState("")
+    const [Pseudo,setPseudo]=useState("")
+    const [Photodeprofil,setPhotodeprofil]=useState("")
+    const [IdAdresse,setIdAdresse]=useState()
+    const [Voie,setVoie]=useState("")
+    const [Rue,setRue]=useState("")
+    const [Ville,setVille]=useState("")
+    const [CP,setCP]=useState("")
 
-    return (
-        <View> 
 
+    useEffect(() => {
+        axios({
+            method : 'GET',
+            url : "http://codx.fr:8080/GetUserByMail/alicia.lefebvre@gmail.com"
+        }).then((resp) => {
+            setidUser(resp.data[0].idUser)
+            setNom(resp.data[0].nom)
+            setPrenom(resp.data[0].prenom)
+            setPseudo(resp.data[0].pseudo)
+            setTelephone(resp.data[0].telephone)
+            setPhotodeprofil(resp.data[0].photodeprofil)
+        });
+
+        axios({
+            method : 'GET',
+            url : "http://codx.fr:8080/GetAdresse/alicia.lefebvre@gmail.com"
+        }).then((resp) => {
+            setVoie(resp.data[0].voie)
+            setRue(resp.data[0].rue)
+            setVille(resp.data[0].ville)
+            setCP(resp.data[0].CP)
+            setIdAdresse(resp.data[0].idAdresse)
+        });
+
+}, [])
+
+    function GoEditProfil() 
+    {
+        navigation.navigate("EditProfil", {
+            _IdUser: idUser,
+            _Nom : Nom,
+            _Prenom : Prenom,
+            _Pseudo: Pseudo , 
+            _PhotoDeProfil : Photodeprofil,
+            _Telephone : Telephone , 
+            _Mail : "alicia.lefebvre@gmail.com",
+            _IdAdresse : IdAdresse,
+            _Voie : Voie,
+            _Rue : Rue , 
+            _CP : CP , 
+            _Ville: Ville
+        })
+    }
+
+    return(
+        <View style={{width : "100%",height: '100%'}}>
+            <View style={CSS.ViewBackGround}>
+                <Pressable style={CSS.PressableRetour} onPress={() => navigation.goBack()}> 
+                    <Text style={{color :"#46a094",fontSize : 22}}> &lt; Retour </Text>
+                </Pressable>
+            </View>
+
+            <View style={CSS.ViewProfil}>
+                <Image source={{uri : Photodeprofil}} style={CSS.PhotoProfil}/>
+                <Text style={{textAlign :'center',color :'grey',fontSize : 18}}>{Pseudo} </Text>
+                <Text style={CSS.NomPrenom}>{Prenom} {Nom} </Text>
+
+                <View style={{marginBottom : 30}}>
+                    <Text style={CSS.ViewTitle}> Adresse mail</Text>
+                    <Text style={CSS.ViewData}> alicia.lefebvre@gmail.com </Text>
+                </View>
+                
+
+                <View style={{marginBottom : 30}}>
+                    <Text style={CSS.ViewTitle}> Téléphone </Text>
+                    <Text style={CSS.ViewData}> {Telephone} </Text>
+                </View>
+
+                <View style={{marginBottom : 30}}>
+                    <Text style={CSS.ViewTitle}> Adresse </Text>
+                    <Text style={CSS.ViewData}> {Voie} {Rue} {CP} - {Ville} </Text>
+                </View>
+
+                <Pressable style={CSS.Modifier} onPress={() => {GoEditProfil()}}>
+                    <Text style={CSS.TextGoButton}> Modifier </Text>
+                </Pressable>
+            </View>
         </View>
+        
     )
-
 }
 
 
-const CSS=StyleSheet.create({
-   
+const CSS= StyleSheet.create({
+    ViewBackGround : 
+    {
+        width : '100%',
+        height : 600,
+        backgroundColor : '#46a094',
+        borderBottomLeftRadius : '50%',
+        borderBottomRightRadius : '50%'
+    },
+
+    PressableRetour : {
+        marginTop : 60,
+        marginLeft : '3%',
+        borderWidth : 3 ,
+        width :'27%',
+        textAlign :'center',
+        backgroundColor :"white",
+        position : "relative",
+        borderColor : "white",
+        borderRadius :7,
+    },
+
+    ViewProfil : 
+    {
+        backgroundColor : 'white',
+        width : "94%",
+        height : 650,
+        position : "absolute",
+        top : 150,
+        marginLeft : '3%', 
+        borderRadius : 10
+    },
+
+    PhotoProfil : 
+    {
+        width : 150,
+        height : 150,
+        borderRadius : "50%",
+        alignItems : 'center',
+        marginLeft : "30%",
+        position : "relative" , 
+        top : -50
+    },
+
+    NomPrenom : {   
+        fontSize : 27,
+        color : "#46a094",
+        fontWeight : 'bold',
+        textAlign :'center',
+        marginTop : 0,
+        marginBottom : 40
+        
+    },
+
+    ViewTitle : 
+    {
+        color : 'grey',
+        fontSize : 26,
+        marginLeft : '3%'
+    },
+
+    ViewData : {
+        color : "#46a094",
+        fontSize : 24,
+        marginLeft : "10%"
+    },
+    Modifier: {
+        marginTop: 40,
+        borderWidth: 3,
+        width: '50%',
+        textAlign: 'center',
+        backgroundColor: "transparent",
+        borderColor: "#53ba4e",
+        borderRadius: 7,
+        marginLeft: '25%'
+    },
+
+    TextGoButton: {
+        textAlign: 'center',
+        color: "white",
+        fontSize: 18,
+        lineHeight: 21,
+        fontWeight: 'bold',
+        letterSpacing: 0.25,
+        color: '#53ba4e',
+        paddingHorizontal: 10,
+        paddingVertical: 5
+
+    }
 })
 
-
-export default Profil ; 
+export default InfoPerso ; 

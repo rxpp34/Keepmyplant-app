@@ -80,10 +80,10 @@ function App({ navigation }) {
     return (
         <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Authentification" component={Authentification} />
+            <Stack.Screen name="HomeTabs" component={Tabs} />
                  <Stack.Screen name="ResetPassword" component={ResetPassword} />
                 <Stack.Screen name="DemandeMdpOublie" component={DemandeMdpOublie} />
-                <Stack.Screen name="HomeTabs" component={Tabs} />
+                
                 <Stack.Screen name="Map" component={Map} />
                 <Stack.Screen name="ReserveAnnonce" component={ReserveAnnonce} />
                 <Stack.Screen name="CreatePlante" component={CreatePlante} />

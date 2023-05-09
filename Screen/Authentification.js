@@ -3,11 +3,12 @@ import { Text, View,Image,StyleSheet,TextInput, Button,Pressable,TouchableWithou
 import {REACT_SERVER_APP} from "@env"
 import { useState } from "react";
 import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
 
 
-function Authentification ({navigation}) 
+function Authentification () 
 {
-
+    const navigation=useNavigation()
     const [Email,setEMail]=useState("")
     const [Password,setPassword]=useState("")
 
@@ -37,7 +38,11 @@ function Authentification ({navigation})
                 <TextInput placeholder="Email" style={CSS.Input} value={Email} onChangeText={setEMail}/>
                 <TextInput placeholder="Mot de passe" secureTextEntry={true} style={CSS.Input} value={Password} onChangeText={setPassword}/>
             </View>
-            <Text style={CSS.ForgetPassword}> Mot de passe oublié</Text>
+
+            <Pressable onPress={() => {navigation.navigate("DemandeMdpOublie")}}>
+                <Text style={CSS.ForgetPassword}> Mot de passe oublié</Text>
+            </Pressable>
+            
 
             <Pressable style={CSS.ConnectButton} onPress={Connect}>
                 <Text style={CSS.TextConnectButton}> Se connecter </Text>

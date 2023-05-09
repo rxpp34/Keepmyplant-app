@@ -142,6 +142,8 @@ app.post("/ResetPassword/:password/:idUser", function (req, res) {
     })
 })
 
+
+
 //----------------------------------//
 //------ Page visite de profil -----//
 //----------------------------------//
@@ -747,7 +749,10 @@ app.post("/ValidateConfirmationCodeMail/:mail/:code", function (req, res) { // P
             [req.params.mail, req.params.code], (err, result) => {
                 if (err) throw err;
                 if (Object.keys(result).length > 0) {
-                    res.send("OK")
+                    conx.query("DELETE FROM CodeConfirmation WHERE Mail=? AND Code=?",[req.params.mail, req.params.code],(err,result) => {
+                        if (err) throw err ;
+                        res.send("OK")
+                    })
                 }
                 else {
                     res.send("FAIL")

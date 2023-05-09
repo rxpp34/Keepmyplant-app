@@ -19,6 +19,9 @@ import MesDemandes from "./Screen/MesDemandes";
 import GestionDemandeAnnonce from "./Screen/GestionDemandeAnnonce";
 import EditProfil from "./Screen/EditProfil";
 import VisitProfil from "./Screen/VisiteProfil"
+import DemandeMdpOublie from "./Screen/DemandeMdpOublie"
+import ConfirmCodeByMail from "./Screen/ConfirmCodeByMail"
+import ResetPassword from "./Screen/ResetPassword"
 import Authentification from "./Screen/Authentification";
 
 const Tab = createBottomTabNavigator();
@@ -77,7 +80,9 @@ function App({ navigation }) {
     return (
         <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-
+            <Stack.Screen name="Authentification" component={Authentification} />
+                 <Stack.Screen name="ResetPassword" component={ResetPassword} />
+                <Stack.Screen name="DemandeMdpOublie" component={DemandeMdpOublie} />
                 <Stack.Screen name="HomeTabs" component={Tabs} />
                 <Stack.Screen name="Map" component={Map} />
                 <Stack.Screen name="ReserveAnnonce" component={ReserveAnnonce} />
@@ -90,6 +95,8 @@ function App({ navigation }) {
                 <Stack.Screen name="Profil" component={Profil} />
                 <Stack.Screen name="EditProfil" component={EditProfil} />
                 <Stack.Screen name="VisitProfil" component={VisitProfil} />
+                <Stack.Screen name="ConfirmCodeByMail" component={ConfirmCodeByMail} />
+                
 
             </Stack.Navigator>
         </NavigationContainer>

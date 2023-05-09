@@ -16,11 +16,8 @@ import Photo from "./Screen/Photo";
 import MonCompte from "./Screen/MonCompte"
 import MesAnnonces from "./Screen/MesAnnonces";
 import MesDemandes from "./Screen/MesDemandes";
-<<<<<<< HEAD
 import GestionDemandeAnnonce from "./Screen/GestionDemandeAnnonce";
-=======
 import EditProfil from "./Screen/EditProfil";
->>>>>>> 9921b52d64f7b14bb75b672abb88ec99f460cdf6
 import Authentification from "./Screen/Authentification";
 
 const Tab = createBottomTabNavigator();
@@ -79,7 +76,7 @@ function App({ navigation }) {
     return (
         <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                
+
                 <Stack.Screen name="HomeTabs" component={Tabs} />
                 <Stack.Screen name="Map" component={Map} />
                 <Stack.Screen name="ReserveAnnonce" component={ReserveAnnonce} />
@@ -88,12 +85,9 @@ function App({ navigation }) {
                 <Stack.Screen name="Photo" component={Photo} />
                 <Stack.Screen name="MesAnnonces" component={MesAnnonces} />
                 <Stack.Screen name="MesDemandes" component={MesDemandes} />
-<<<<<<< HEAD
                 <Stack.Screen name="GestionDemandeAnnonce" component={GestionDemandeAnnonce} />
-=======
                 <Stack.Screen name="Profil" component={Profil} />
                 <Stack.Screen name="EditProfil" component={EditProfil} />
->>>>>>> 9921b52d64f7b14bb75b672abb88ec99f460cdf6
             </Stack.Navigator>
         </NavigationContainer>
     );

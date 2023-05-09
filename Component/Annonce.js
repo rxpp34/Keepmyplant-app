@@ -1,10 +1,11 @@
 import React from "react";
 import axios from "axios";
 import react, { useEffect, useState } from "react";
-import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
+import { View, Text, Image, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 function Annonce(props) {
-
+    const navigation = useNavigation();
     const [Photo, setPhoto] = useState([])
 
     useEffect(() => {
@@ -16,6 +17,12 @@ function Annonce(props) {
         })
 
     }, [])
+
+    function GoToModif() {
+        navigation.navigate("GestionDemandeAnnonce", {
+            _idAnnonce: props.idAnnonce,
+        });
+    }
     return (
         <View style={styles.container}>
             <View style={styles.cardContent}>
@@ -44,6 +51,12 @@ function Annonce(props) {
                     <Text style={styles.label}> <Text style={{fontWeight : 'bold'}}> Gardée par: </Text> {props.pseudoTest}</Text>
                     <Text style={styles.expertise}>{props.niveauExpertiseString}</Text>
                 </View>
+                <View style={styles.separator}></View>
+                <View style={[styles.optionCard, { alignSelf: 'flex-end' }]}>
+                    <TouchableOpacity title="GestionDemande" onPress={() => GoToModif()}>
+                        <Text style={styles.modifierButton}>Gestion reservation</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         </View>
     );
@@ -66,6 +79,33 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.34,
         shadowRadius: 6.27,
         elevation: 10,
+    },
+    optionCard: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+    modifierButton: {
+        marginLeft: 5,
+        marginTop: 5,
+        marginBottom: 10,
+        paddingHorizontal: 16,
+        height: 35,
+        lineHeight: 35, // Mise à jour de la valeur de lineHeight
+        borderRadius: 7,
+        backgroundColor: '#8E8E8E',
+        color: '#fff',
+        fontWeight: '400',
+        fontSize: 16,
+        shadowColor: 'rgba(0, 0, 0, 0.1)',
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 1,
+        shadowRadius: 14,
+        elevation: 4,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     ViewPhoto: {
         width: "98%",

@@ -16,6 +16,7 @@ import Photo from "./Screen/Photo";
 import MonCompte from "./Screen/MonCompte"
 import MesAnnonces from "./Screen/MesAnnonces";
 import MesDemandes from "./Screen/MesDemandes";
+import GestionDemandeAnnonce from "./Screen/GestionDemandeAnnonce";
 import EditProfil from "./Screen/EditProfil";
 import VisitProfil from "./Screen/VisiteProfil"
 import Authentification from "./Screen/Authentification";
@@ -76,7 +77,7 @@ function App({ navigation }) {
     return (
         <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                
+
                 <Stack.Screen name="HomeTabs" component={Tabs} />
                 <Stack.Screen name="Map" component={Map} />
                 <Stack.Screen name="ReserveAnnonce" component={ReserveAnnonce} />
@@ -85,6 +86,7 @@ function App({ navigation }) {
                 <Stack.Screen name="Photo" component={Photo} />
                 <Stack.Screen name="MesAnnonces" component={MesAnnonces} />
                 <Stack.Screen name="MesDemandes" component={MesDemandes} />
+                <Stack.Screen name="GestionDemandeAnnonce" component={GestionDemandeAnnonce} />
                 <Stack.Screen name="Profil" component={Profil} />
                 <Stack.Screen name="EditProfil" component={EditProfil} />
                 <Stack.Screen name="VisitProfil" component={VisitProfil} />

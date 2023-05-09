@@ -44,10 +44,10 @@ function ReserveAnnonce (props)
                     <Text style={{color :"white",fontSize : 22}}> &lt; Retour </Text>
             </Pressable>
 
-            <View style={CSS.PdpNomPrenom}>
-                <Image source={{uri : route.params._urlPhoto}} style={{width: 100, height: 100 , borderRadius : '50%' , borderWidth : 2 , borderColor : "#46a094"}}/>
+            <Pressable style={CSS.PdpNomPrenom} onPress={() => {navigation.navigate("VisitProfil", {_IdUser  : route.params._iduser, _Mail : route.params._mail , _Expertise : route.params._expertise})}}>
+                <Image source={{uri : route.params._urlPhoto}} style={{width: 100, height: 100 , borderRadius : '50%' , borderWidth : 2 , borderColor : "#46a094"}} />
                 <Text style={{color :"#46a094", fontWeight :'bold' ,marginLeft :'2%', fontSize : 26}}> {route.params._prenom} {route.params._nom}  </Text>
-            </View>
+            </Pressable>
 
             <View style={{marginTop : 30 ,marginLeft :'2%',fontSize : 20, color: "#46a094",fontWeight : "bold"}}> 
                 <Text style={{color : "#7d7d7d",fontSize : 24,fontWeight : "bold"}}> Du <Text style={CSS.TextDate}>{route.params._date_debut}</Text> au <Text style={CSS.TextDate}>{route.params._date_fin}</Text></Text >

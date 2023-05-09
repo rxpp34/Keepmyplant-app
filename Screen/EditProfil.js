@@ -46,6 +46,25 @@ function EditProfil()
         }
     };
 
+
+    function UpdateInfoProfil()
+    {
+        axios({
+            method :"POST" ,
+            url :"http://codx.fr:8080/UpdateInfoProfil/"+Nom+"/"+Prenom+"/"+Telephone+"/"+idUser
+        }).then((resp) => {
+            if(resp.data==="OK")
+            {
+                axios({
+                    method : 'POST',
+                    url : "http://codx.fr:8080/UpdateAdresse/" + Voie+"/"+Rue+"/"+Ville+"/"+CP+"/"+IdAdresse
+                })
+            }
+        })
+    }
+
+
+
     return(
         <View style={CSS.MainView}>
             <Pressable style={CSS.PressableRetourRecherche} onPress={() => navigation.goBack()}>
@@ -124,7 +143,7 @@ function EditProfil()
                                 }}/>
                 </View>
 
-                <Pressable style={CSS.Modifier}>
+                <Pressable style={CSS.Modifier} onPress={() => {UpdateInfoProfil()}}>
                     <Text style={CSS.TextGoButton}> Valider </Text>
                 </Pressable>
             </ScrollView>

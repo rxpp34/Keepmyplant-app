@@ -17,6 +17,7 @@ import MonCompte from "./Screen/MonCompte"
 import MesAnnonces from "./Screen/MesAnnonces";
 import MesDemandes from "./Screen/MesDemandes";
 import EditProfil from "./Screen/EditProfil";
+import VisitProfil from "./Screen/VisiteProfil"
 import Authentification from "./Screen/Authentification";
 
 const Tab = createBottomTabNavigator();
@@ -86,6 +87,8 @@ function App({ navigation }) {
                 <Stack.Screen name="MesDemandes" component={MesDemandes} />
                 <Stack.Screen name="Profil" component={Profil} />
                 <Stack.Screen name="EditProfil" component={EditProfil} />
+                <Stack.Screen name="VisitProfil" component={VisitProfil} />
+
             </Stack.Navigator>
         </NavigationContainer>
     );

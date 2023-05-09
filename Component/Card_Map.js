@@ -44,7 +44,7 @@ function CardMap(props)
                 {Photo.map((item) => {
                     const temp=Dimensions.get('screen').width-(0.068*Dimensions.get('screen').width)
                     const widthPhoto =temp / Photo.length
-                    return (<Image source={{uri : item.UrlPhoto}} style={{width : widthPhoto , height : "100%", borderRadius : 5}}/>)
+                    return (<Image source={{uri : item.UrlPhoto}} style={{width : widthPhoto , height : "100%", borderRadius : 5}}  />)
                 })}
 
             </View>

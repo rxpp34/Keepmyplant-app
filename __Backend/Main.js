@@ -8,6 +8,7 @@ const port = 5000;
 const Validate_mail = require("./Mail/ConfirmSignupMail")
 
 const cors = require('cors');
+const { requestPermissionsAsync } = require("expo-media-library");
 const corsOptions = {
     origin: '*',
     credentials: true,            //access-control-allow-credentials:true
@@ -113,10 +114,17 @@ app.get("/LoadKeepAnnonces/:mail", function (req, res) {
 });
 
 app.post("/UpdateAdresse/:voie/:rue/:ville/:cp/:idAdresse", function (req, res) {
-    conx.query("UPDATE Adresses set voie=? , rue=? , ville=? , cp=? WHERE idAdresse=?", [req.params.voie, req.params.rue, req.params.ville, req.params.cp, req.params.idAdresse], (err, result) => {
-        if (err) throw err;
-        res.send("OK")
+    const adresse = req.params.voie+" "+req.params.rue+" "+req.params.cp+" "+req.params.ville
+    axios({
+        method : 'post',
+        url :  "https://maps.googleapis.com/maps/api/geocode/json?address=" + adresse + "&key=AIzaSyD580n6077mlkKAFPsp37g0lm-5ouuVEF4"
+    }).then((resp) => {
+        conx.query("UPDATE Adresses set voie=? , rue=? , ville=? , cp=?, lat=? ,lng= ? WHERE idAdresse=?", [req.params.voie, req.params.rue, req.params.ville, req.params.cp, req.params.idAdresse,resp.data.results[0].geometry.location.lat,resp.data.results[0].geometry.location.lng], (err, result) => {
+            if (err) throw err;
+            res.send("OK")
+        })
     })
+
 })
 
 app.post("/UpdateInfoProfil/:nom/:prenom/:telephone/:iduser", function (req, res) {

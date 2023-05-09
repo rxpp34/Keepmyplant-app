@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 function CardMap(props) 
 {
     const navigation  = useNavigation();
+
+    
     const [Photo,setPhoto]=useState([])
 
     useEffect(() => {

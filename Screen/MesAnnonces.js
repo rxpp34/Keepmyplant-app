@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, View, Text, StyleSheet } from "react-native";
+import { ScrollView, View, Text, StyleSheet ,Pressable} from "react-native";
 import axios from "axios";
 import Annonce from "../Component/Annonce";
+import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native";
 
 function MesAnnonces() {
     const [annonceList, setAnnonces] = useState([]);
-
+    const navigation = useNavigation();
+    
     useEffect(() => {
         TrouverAnnonces();
     }, []);
@@ -24,9 +26,13 @@ function MesAnnonces() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Mes annonces</Text>
+            <Pressable style={styles.PressableRetourRecherche} onPress={() => navigation.goBack()}>
+                <Text style={{ color: "white", fontSize: 22 }}> &lt; Retour </Text>
+            </Pressable>
+            <Text style={styles.title}> Mes annonces postés</Text>
 
-            <ScrollView>
+
+            <ScrollView style={{marginTop : 30}}>
                 {annonceList.map((item) => (
                     <View key={item.idAnnonce} style={styles.annonceContainer}>
                         <Annonce
@@ -67,6 +73,26 @@ const styles = StyleSheet.create({
     },
     annonceContainer: {
         marginTop: 10,
+    },
+    title:
+    {
+        fontSize: 26,
+        color: "#46a094",
+        fontWeight: "bold",
+        marginTop: 30,
+        marginLeft: '3%',
+    },
+
+    PressableRetourRecherche:
+    {
+        marginTop: 60,
+        marginLeft: '3%',
+        borderWidth: 3,
+        width: '26%',
+        textAlign: 'center',
+        backgroundColor: "#46a094",
+        borderColor: "#46a094",
+        borderRadius: 7,
     },
 });
 

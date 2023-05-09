@@ -17,3 +17,48 @@ Télécharger sur votre téléphone l'appli expo
 turtle : #C4EBC2
 
 #15443E
+
+
+
+
+ optionCard: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+    supprimerButton: {
+        margin: 5,
+        marginBottom: 10,
+        paddingHorizontal: 16,
+        height: 35,
+        borderRadius: 7,
+        backgroundColor: '#8C3A3A',
+        color: '#fff',
+        fontWeight: '400',
+        fontSize: 14,
+        shadowColor: 'rgba(0, 0, 0, 0.1)',
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 1,
+        shadowRadius: 14,
+        elevation: 4,
+        justifyContent: 'center', // Centrer verticalement
+        alignItems: 'center', // Centrer horizontalement
+    },
+    modifierButton: {
+        marginLeft: 5,
+        marginTop: 5,
+        marginBottom: 10,
+        paddingHorizontal: 16,
+        height: 35,
+        lineHeight: 35, // Mise à jour de la valeur de lineHeight
+        borderRadius: 7,
+        backgroundColor: '#8E8E8E',
+        color: '#fff',
+        fontWeight: '400',
+        fontSize: 16,
+        shadowColor: 'rgba(0, 0, 0, 0.1)',
+        shadowOffset: {
+            width: 0,
+            height: 4,

@@ -7,6 +7,7 @@ import Demande from "../Component/Demande";
 
 function MesDemandes() {
     const [DemandeList, setDemandes] = useState([]);
+    const navigation = useNavigation();
 
     useFocusEffect(
         React.useCallback(() => {
@@ -27,9 +28,10 @@ function MesDemandes() {
 
     return (
         <View style={styles.container}>
-            <Text style={{ marginTop: 100, marginLeft: "10%", fontSize: 32, fontWeight: "bold", color: "#46a094" }}>
-                Mes demandes
-            </Text>
+            <Pressable style={styles.PressableRetourRecherche} onPress={() => navigation.goBack()}>
+                <Text style={{ color: "white", fontSize: 22 }}> &lt; Retour </Text>
+            </Pressable>
+            <Text style={styles.title}> Mes demandes de gardinages</Text>
 
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
                 {DemandeList.map((item) => {
@@ -58,7 +60,29 @@ const styles = StyleSheet.create({
     scrollViewContent: {
         flexGrow: 1,
         paddingBottom: 20,
+        marginTop : 30,
     },
+    title:
+    {
+        fontSize: 26,
+        color: "#46a094",
+        fontWeight: "bold",
+        marginTop: 30,
+        marginLeft: '3%',
+    },
+
+    PressableRetourRecherche:
+    {
+        marginTop: 60,
+        marginLeft: '3%',
+        borderWidth: 3,
+        width: '26%',
+        textAlign: 'center',
+        backgroundColor: "#46a094",
+        borderColor: "#46a094",
+        borderRadius: 7,
+    },
+
 });
 
 export default MesDemandes;

@@ -1,176 +1,184 @@
 import react from "react";
-import { Text, View, Image, StyleSheet, TextInput, Button, Pressable, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from "react-native";
+import { Text, View,Image,StyleSheet,TextInput, Button,Pressable,TouchableWithoutFeedback,Keyboard } from "react-native";
+import { useState ,useEffect} from "react";
+import DateTimePicker from  "@react-native-community/datetimepicker" ;
+import axios from "axios"
 import { useNavigation } from "@react-navigation/native";
 
 
 
-function Profil({ route }) {
-    const navigation = useNavigation();
+function InfoPerso () 
+{
+    const navigation=useNavigation() ; 
+    const [idUser,setidUser]=useState()
+    const [Nom,setNom]=useState("") ;
+    const [Prenom,setPrenom]=useState("")
+    const [Telephone,setTelephone]=useState("")
+    const [Pseudo,setPseudo]=useState("")
+    const [Photodeprofil,setPhotodeprofil]=useState("")
+    const [IdAdresse,setIdAdresse]=useState()
+    const [Voie,setVoie]=useState("")
+    const [Rue,setRue]=useState("")
+    const [Ville,setVille]=useState("")
+    const [CP,setCP]=useState("")
 
-    return (
-        <View style={CSS.MainView}>
-            <Text style={CSS.title}> Mon Compte </Text>
 
-            <TouchableOpacity onPress={() => navigation.navigate('MesDemandes')}>
-                <View style={CSS.ViewDemande}>
-                    <Image source={require('../assets/Demande.png')} style={{ width: 96, height: 96 }} />
-                    <Text style={CSS.TextDemande} > Mes demandes de gardinages </Text>
+    useEffect(() => {
+        axios({
+            method : 'GET',
+            url : "http://codx.fr:8080/GetUserByMail/alicia.lefebvre@gmail.com"
+        }).then((resp) => {
+            setidUser(resp.data[0].idUser)
+            setNom(resp.data[0].nom)
+            setPrenom(resp.data[0].prenom)
+            setPseudo(resp.data[0].pseudo)
+            setTelephone(resp.data[0].telephone)
+            setPhotodeprofil(resp.data[0].photodeprofil)
+        });
+
+        axios({
+            method : 'GET',
+            url : "http://codx.fr:8080/GetAdresse/alicia.lefebvre@gmail.com"
+        }).then((resp) => {
+            setVoie(resp.data[0].voie)
+            setRue(resp.data[0].rue)
+            setVille(resp.data[0].ville)
+            setCP(resp.data[0].CP)
+            setIdAdresse(resp.data[0].idAdresse)
+        });
+
+}, [])
+
+    function GoEditProfil() 
+    {
+        navigation.navigate("EditProfil", {
+            _IdUser: idUser,
+            _Nom : Nom,
+            _Prenom : Prenom,
+            _Pseudo: Pseudo , 
+            _PhotoDeProfil : Photodeprofil,
+            _Telephone : Telephone , 
+            _Mail : "alicia.lefebvre@gmail.com",
+            _IdAdresse : IdAdresse,
+            _Voie : Voie,
+            _Rue : Rue , 
+            _CP : CP , 
+            _Ville: Ville
+        })
+    }
+
+    return(
+        <View style={{width : "100%",height: '100%'}}>
+            <View style={CSS.ViewBackGround}>
+                <Pressable style={CSS.PressableRetour} onPress={() => navigation.goBack()}> 
+                    <Text style={{color :"#46a094",fontSize : 22}}> &lt; Retour </Text>
+                </Pressable>
+            </View>
+
+            <View style={CSS.ViewProfil}>
+                <Image source={{uri : Photodeprofil}} style={CSS.PhotoProfil}/>
+                <Text style={{textAlign :'center',color :'grey',fontSize : 18}}>{Pseudo} </Text>
+                <Text style={CSS.NomPrenom}>{Prenom} {Nom} </Text>
+
+                <View style={{marginBottom : 30}}>
+                    <Text style={CSS.ViewTitle}> Adresse mail</Text>
+                    <Text style={CSS.ViewData}> alicia.lefebvre@gmail.com </Text>
                 </View>
-            </TouchableOpacity>
+                
 
-            <TouchableOpacity onPress={() => navigation.navigate('MesAnnonces')}>
-                <View style={CSS.ViewAnnonce}>
-                    <Image source={require('../assets/Annonce.png')} style={{ width: 96, height: 96 }} />
-                    <Text style={CSS.TextAnnonce} > Mes annonces postées</Text>
+                <View style={{marginBottom : 30}}>
+                    <Text style={CSS.ViewTitle}> Téléphone </Text>
+                    <Text style={CSS.ViewData}> {Telephone} </Text>
                 </View>
-            </TouchableOpacity>
 
-            <View style={CSS.ViewAnnonce}>
-                <Image source={require('../assets/PlanteGarder.png')} style={{ width: 96, height: 96 }} />
-                <Text style={CSS.TextAnnonce} > Plantes Gardées </Text>
+                <View style={{marginBottom : 30}}>
+                    <Text style={CSS.ViewTitle}> Adresse </Text>
+                    <Text style={CSS.ViewData}> {Voie} {Rue} {CP} - {Ville} </Text>
+                </View>
+
+                <Pressable style={CSS.Modifier} onPress={() => {GoEditProfil()}}>
+                    <Text style={CSS.TextGoButton}> Modifier </Text>
+                </Pressable>
             </View>
-
-            <View style={CSS.VerticalLine} />
-
-            <View style={CSS.ViewInfoPerso}>
-                <Image source={require('../assets/Info.png')} style={{ width: 48, height: 48 }} />
-                <Text style={CSS.TextInfoPerso} > Informations personnelles </Text>
-            </View>
-
-            <View style={CSS.ViewInfoPerso}>
-                <Image source={require('../assets/Password.png')} style={{ width: 48, height: 48 }} />
-                <Text style={CSS.TextInfoPerso} > Réinitialiser mot de passe</Text>
-            </View>
-
-            <View style={CSS.VerticalLine} />
-
-            <Pressable style={CSS.Logout} >
-                <Text style={CSS.TextGoButton}> Se déconnecter </Text>
-            </Pressable>
         </View>
+        
     )
 }
 
 
-
-
-const CSS = StyleSheet.create({
-    MainView: {
-        width: '100%',
-        height: 'auto',
-        marginTop: 70
-    },
-
-    title:
+const CSS= StyleSheet.create({
+    ViewBackGround : 
     {
-        fontSize: 42,
-        color: "#46a094",
-        fontWeight: "bold"
+        width : '100%',
+        height : 600,
+        backgroundColor : '#46a094',
+        borderBottomLeftRadius : '50%',
+        borderBottomRightRadius : '50%'
     },
 
-    ViewDemande:
+    PressableRetour : {
+        marginTop : 60,
+        marginLeft : '3%',
+        borderWidth : 3 ,
+        width :'27%',
+        textAlign :'center',
+        backgroundColor :"white",
+        position : "relative",
+        borderColor : "white",
+        borderRadius :7,
+    },
+
+    ViewProfil : 
     {
-        width: '96%',
-        height: 100,
-        borderWidth: 3,
-        marginLeft: '2%',
-        borderColor: 'red',
-        backgroundColor: 'white',
-        borderColor: "white",
-        borderRadius: 7,
-        marginTop: 50,
-        shadowColor: '#46a094',
-        shadowOffset: { width: 0, height: 10 },
-        shadowOpacity: 0.32,
-        shadowRadius: 20,
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-
+        backgroundColor : 'white',
+        width : "94%",
+        height : 650,
+        position : "absolute",
+        top : 150,
+        marginLeft : '3%', 
+        borderRadius : 10
     },
-    TextDemande:
+
+    PhotoProfil : 
     {
-        width: '70%',
-        fontSize: 19,
-        color: "#46a094",
-        marginTop: 30,
-        fontWeight: "bold",
-        marginLeft: '3%'
-
+        width : 150,
+        height : 150,
+        borderRadius : "50%",
+        alignItems : 'center',
+        marginLeft : "30%",
+        position : "relative" , 
+        top : -50
     },
 
-    ViewAnnonce: {
-        width: '96%',
-        height: 100,
-        borderWidth: 3,
-        marginLeft: '2%',
-        borderColor: 'red',
-        backgroundColor: 'white',
-        borderColor: "white",
-        borderRadius: 7,
-        marginTop: 20,
-        shadowColor: '#46a094',
-        shadowOffset: { width: 0, height: 10 },
-        shadowOpacity: 0.32,
-        shadowRadius: 20,
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
+    NomPrenom : {   
+        fontSize : 27,
+        color : "#46a094",
+        fontWeight : 'bold',
+        textAlign :'center',
+        marginTop : 0,
+        marginBottom : 40
+        
     },
 
-    TextAnnonce: {
-        width: '70%',
-        fontSize: 19,
-        color: "#46a094",
-        marginTop: 10,
-        fontWeight: "bold",
-        marginLeft: '3%'
-    },
-
-    VerticalLine: {
-        borderWidth: 1,
-        borderColor: "#46a094",
-        marginTop: 30,
-        width: "90%",
-        marginLeft: '5%'
-    },
-
-    ViewInfoPerso:
+    ViewTitle : 
     {
-        width: '96%',
-        height: 50,
-        borderWidth: 3,
-        marginLeft: '2%',
-        borderColor: 'red',
-        backgroundColor: 'white',
-        borderColor: "white",
-        borderRadius: 7,
-        marginTop: 20,
-        shadowColor: '#46a094',
-        shadowOffset: { width: 0, height: 10 },
-        shadowOpacity: 0.32,
-        shadowRadius: 20,
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    TextInfoPerso:
-    {
-        width: '70%',
-        fontSize: 19,
-        color: "#46a094",
-        fontWeight: "bold",
-        marginLeft: '3%'
-
+        color : 'grey',
+        fontSize : 26,
+        marginLeft : '3%'
     },
 
-    Logout: {
+    ViewData : {
+        color : "#46a094",
+        fontSize : 24,
+        marginLeft : "10%"
+    },
+    Modifier: {
         marginTop: 40,
         borderWidth: 3,
         width: '50%',
         textAlign: 'center',
         backgroundColor: "transparent",
-        borderColor: "#f71a0a",
+        borderColor: "#53ba4e",
         borderRadius: 7,
         marginLeft: '25%'
     },
@@ -182,11 +190,11 @@ const CSS = StyleSheet.create({
         lineHeight: 21,
         fontWeight: 'bold',
         letterSpacing: 0.25,
-        color: '#f71a0a',
+        color: '#53ba4e',
         paddingHorizontal: 10,
         paddingVertical: 5
 
     }
 })
 
-export default Profil; 
+export default InfoPerso ; 

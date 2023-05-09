@@ -47,8 +47,8 @@ function Demande(props) {
 
     if (props.validation === null) {
         statusText = "En attente";
-        statusColor = "black";
-        statusBorderColor = "black";
+        statusColor = "orange";
+        statusBorderColor = "orange";
     } else if (props.validation === 0) {
         statusText = "Refusée";
         statusColor = "red";
@@ -62,12 +62,16 @@ function Demande(props) {
     return (
         <View style={[styles.container, { marginBottom: 20, borderColor: statusBorderColor }]}>
             <View style={[styles.cardContent, { borderColor: statusBorderColor }]}>
-                <View style={styles.statusContainer}>
-                    <Text style={[styles.statusText, { color: statusColor, fontWeight: 'bold' }]}>{statusText}</Text>
-                </View>
+
                 <View style={styles.referenceContainer}>
                     <Text style={styles.reference}>Annonce N° {props.reference}</Text>
                 </View>
+
+                <View style={styles.statusContainer}>
+                    <Text style={[styles.statusText, { color: statusColor, fontWeight: 'bold' }]}>{statusText}</Text>
+                </View>
+
+
                 <View style={styles.dateContainer}>
                     <View style={styles.dateBox}>
                         <Text style={[styles.dateText]}>
@@ -75,15 +79,17 @@ function Demande(props) {
                         </Text>
                     </View>
                 </View>
+
                 <View style={styles.content}>
                     <Text style={styles.label}>{props.description}</Text>
                 </View>
+
             </View>
 
             {props.validation === null ? (
                 <View style={styles.optionCard}>
                     <TouchableOpacity onPress={() => SupprimerReservation(props.idReservation)} style={styles.supprimerButton}>
-                        <Text style={styles.buttonText}>Supprimer</Text>
+                        <Text style={styles.buttonText}>Annuler ma demande</Text>
                     </TouchableOpacity>
                 </View>
             ) : (
@@ -97,12 +103,12 @@ function Demande(props) {
 }
 const styles = StyleSheet.create({
     container: {
-        borderWidth: 1,
+        borderWidth: 2,
+        width : "96%",
+        marginLeft : "2%",
         borderRadius: 10,
         backgroundColor: "white",
         marginBottom: 20,
-        marginLeft: 5,
-        marginRight: 5,
         elevation: 3,
         shadowColor: "#000",
         shadowOffset: {
@@ -116,14 +122,15 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 10,
         left: 10,
-        paddingHorizontal: 8,
-        paddingVertical: 4,
+        marginTop : 30 ,
+        marginBottom : 20,
         borderRadius: 5,
     },
     statusText: {
         fontSize: 20,
         fontWeight: 'bold',
         color: 'white',
+        textDecorationLine :"underline"
     },
     cardContent: {
         flexDirection: "column",
@@ -132,11 +139,12 @@ const styles = StyleSheet.create({
     referenceContainer: {
         flexDirection: "row",
         justifyContent: "flex-end",
+        marginBottom : 10
     },
     reference: {
         fontSize: 20,
         fontWeight: "bold",
-        color: "black",
+        color: "grey",
         alignSelf: "center",
         marginBottom: 10,
     },
@@ -145,18 +153,18 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         marginBottom: 10,
-        marginTop: 10,
+        marginTop: 30,
     },
     dateBox: {
-        backgroundColor: "#E0F2E9",
+        backgroundColor: "#46a094",
         borderWidth: 1,
-        borderColor: "black",
+        borderColor: "#46a094",
         borderRadius: 5,
         padding: 5,
     },
     dateText: {
         fontSize: 14,
-        color: "black",
+        color: "white",
         textAlign: "center",
         marginTop: 5,
     },
@@ -177,7 +185,7 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     supprimerButton: {
-        backgroundColor: "red",
+        backgroundColor: "orange",
         borderRadius: 5,
         padding: 8,
         marginLeft: 10,

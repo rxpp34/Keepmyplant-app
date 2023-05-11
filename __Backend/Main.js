@@ -114,12 +114,12 @@ app.get("/LoadKeepAnnonces/:mail", function (req, res) {
 });
 
 app.post("/UpdateAdresse/:voie/:rue/:ville/:cp/:idAdresse", function (req, res) {
-    const adresse = req.params.voie+" "+req.params.rue+" "+req.params.cp+" "+req.params.ville
+    const adresse = req.params.voie + " " + req.params.rue + " " + req.params.cp + " " + req.params.ville
     axios({
-        method : 'post',
-        url :  "https://maps.googleapis.com/maps/api/geocode/json?address=" + adresse + "&key=AIzaSyD580n6077mlkKAFPsp37g0lm-5ouuVEF4"
+        method: 'post',
+        url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + adresse + "&key=AIzaSyD580n6077mlkKAFPsp37g0lm-5ouuVEF4"
     }).then((resp) => {
-        conx.query("UPDATE Adresses set voie=? , rue=? , ville=? , cp=?, lat=? ,lng= ? WHERE idAdresse=?", [req.params.voie, req.params.rue, req.params.ville, req.params.cp, req.params.idAdresse,resp.data.results[0].geometry.location.lat,resp.data.results[0].geometry.location.lng], (err, result) => {
+        conx.query("UPDATE Adresses set voie=? , rue=? , ville=? , cp=?, lat=? ,lng= ? WHERE idAdresse=?", [req.params.voie, req.params.rue, req.params.ville, req.params.cp, req.params.idAdresse, resp.data.results[0].geometry.location.lat, resp.data.results[0].geometry.location.lng], (err, result) => {
             if (err) throw err;
             res.send("OK")
         })
@@ -249,15 +249,16 @@ app.post("/CreateConseil/:mail/:idTypePlant", function (req, res) {
         );
 });
 
-app.post("/UpdateConseil/:titre/:description/:idConseil", function (req, res) {
+app.post("/UpdateConseil/:titre/:description/:idTypePlante/:idConseil", function (req, res) {
     conx.query
-        ("UPDATE Conseils SET titre = ?, description = ? WHERE idConseil = ?",
-            [req.params.titre, req.params.description, req.params.idConseil], (err, result) => {
+        ("UPDATE Conseils SET titre = ?, description = ?, idTypePlante = ? WHERE idConseil = ?",
+            [req.params.titre, req.params.description, req.params.idTypePlante, req.params.idConseil], (err, result) => {
                 if (err) throw err;
                 res.send("OK");
             }
         );
 })
+
 
 app.delete("/DeleteConseilById/:idConseil", function (req, res) {
     conx.query
@@ -749,8 +750,8 @@ app.post("/ValidateConfirmationCodeMail/:mail/:code", function (req, res) { // P
             [req.params.mail, req.params.code], (err, result) => {
                 if (err) throw err;
                 if (Object.keys(result).length > 0) {
-                    conx.query("DELETE FROM CodeConfirmation WHERE Mail=? AND Code=?",[req.params.mail, req.params.code],(err,result) => {
-                        if (err) throw err ;
+                    conx.query("DELETE FROM CodeConfirmation WHERE Mail=? AND Code=?", [req.params.mail, req.params.code], (err, result) => {
+                        if (err) throw err;
                         res.send("OK")
                     })
                 }

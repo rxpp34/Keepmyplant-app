@@ -3,10 +3,10 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, Alert } from "react-na
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 
-function Plante(props) {
+function Conseil(props) {
     const navigation = useNavigation();
     const [libelle, setLibelle] = useState("libelle");
-    const [listPlantes, setListPlantes] = useState([]);
+    const [listConseil, setListConseil] = useState([]);
 
     useEffect(() => {
         axios({
@@ -20,31 +20,25 @@ function Plante(props) {
     function deletePlante() {
         axios({
             method: "DELETE",
-            url: "http://codx.fr:8080/DeletePlanteById/" + props.idPlante,
+            url: "http://codx.fr:8080/DeleteConseilById/" + props.idConseil,
         }).then(() => {
             // Gérer la suppression de la plante dans l'application React Native
             // Mettre à jour la liste des plantes en supprimant la plante supprimée
-            const updatedList = listPlantes.filter(
-                (plante) => plante.idPlante !== props.idPlante
+            const updatedList = listConseil.filter(
+                (conseil) => conseil.idConseil !== props.idConseil
             );
-            setListPlantes(updatedList);
+            setListConseil(updatedList);
         });
     }
 
     function GoToModif() {
-        navigation.navigate("ModifyPlante", {
-            _nom: props.nom,
+        navigation.navigate("ModifyConseil", {
+            _idConseil: props.idConseil,
+            _titre: props.titre,
             _description: props.description,
-            _url: props.url,
             _libelle: libelle,
-            _idPlante: props.idPlante,
+            _urlPhoto: props.urlPhoto,
             ListTypePlant: props.ListTypePlant, // Passer la liste des types de plantes
-        });
-    }
-
-    function navigateToConseil(idtype) {
-        navigation.navigate("LesConseilsPourTypePlantes", {
-            _idtype: idtype,
         });
     }
 
@@ -68,17 +62,17 @@ function Plante(props) {
         <View style={[styles.container, { marginBottom: 20 }]}>
             <View style={styles.cardContent}>
                 <View style={styles.photoCard}>
-                    <Image source={{ uri: props.url }} style={styles.image} />
+                    <Image source={{ uri: props.urlPhoto }} style={styles.image} />
                 </View>
 
+                <Text style={styles.libelle}>{props.libelle}</Text>
+
                 <View style={styles.content}>
-                    <Text style={styles.name}>{props.nom}</Text>
+                    <Text style={styles.name}>{props.titre}</Text>
                     <Text style={styles.description}>{props.description}</Text>
                 </View>
 
-                <TouchableOpacity style={styles.buttonEnSavoirPlus} onPress={() => navigateToConseil(props.idtype)}>
-                    <Text style={styles.buttonEnSavoirPlusText}>{libelle}</Text>
-                </TouchableOpacity>
+
             </View>
 
             <View style={styles.optionCard}>
@@ -107,20 +101,6 @@ const styles = StyleSheet.create({
         shadowRadius: 6.27,
         elevation: 10,
     },
-    buttonEnSavoirPlus: {
-        backgroundColor: "#F6F6F6",
-        paddingVertical: 10,
-        paddingHorizontal: 15,
-        borderRadius: 5,
-        marginTop: 10,
-        marginLeft: 10,
-    },
-    buttonEnSavoirPlusText: {
-        color: "black",
-        textAlign: "center",
-        fontWeight: "bold",
-        fontSize: 16,
-    },
     cardContent: {
         flexDirection: "column",
         marginBottom: 10,
@@ -134,14 +114,20 @@ const styles = StyleSheet.create({
         overflow: "hidden",
     },
     image: {
-        flex: 1,
         width: "100%",
+        height: "100%",
         resizeMode: "cover",
     },
     content: {
-        flex: 1,
-        marginTop: 20, // Ajustez l'espacement selon vos besoins,
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
+        marginTop: 5,
+    },
+    libelle: {
+        paddingHorizontal: 10,
+        paddingTop: 5,
+        color: "rgb(0, 151, 93)",
+        fontSize: 16,
+        fontWeight: "bold",
     },
     name: {
         fontSize: 20,
@@ -151,29 +137,23 @@ const styles = StyleSheet.create({
     },
     description: {
         marginBottom: 5,
-        color: "#6BBD99",
-        fontWeight: "bold"
-    },
-    libelle: {
-        color: "rgb(0, 151, 93)",
-        fontSize: 16,
+        color: "black",
         fontWeight: "bold",
     },
     optionCard: {
         flexDirection: "row",
         justifyContent: "flex-end",
         marginRight: 15,
-        marginBottom: 10
+        marginBottom: 10,
     },
     supprimerButton: {
         height: 38,
-        width: 38
-
+        width: 38,
     },
     modifierButton: {
         height: 38,
-        width: 38
+        width: 38,
     }
 });
 
-export default Plante;
+export default Conseil;

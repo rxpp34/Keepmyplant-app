@@ -23,6 +23,9 @@ import DemandeMdpOublie from "./Screen/DemandeMdpOublie"
 import ConfirmCodeByMail from "./Screen/ConfirmCodeByMail"
 import ResetPassword from "./Screen/ResetPassword"
 import Authentification from "./Screen/Authentification";
+import SignUp from "./Screen/SignUp"
+import BravoAnnonce from "./Screen/BravoAnnonce"
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -80,10 +83,13 @@ function App({ navigation }) {
     return (
         <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="HomeTabs" component={Tabs} />
-                 <Stack.Screen name="ResetPassword" component={ResetPassword} />
+            
+
+                <Stack.Screen name="HomeTabs" component={Tabs} />
+                <Stack.Screen name="Authentification" component={Authentification} />
+                <Stack.Screen name="SignUp" component={SignUp} />
+                <Stack.Screen name="ResetPassword" component={ResetPassword} />
                 <Stack.Screen name="DemandeMdpOublie" component={DemandeMdpOublie} />
-                
                 <Stack.Screen name="Map" component={Map} />
                 <Stack.Screen name="ReserveAnnonce" component={ReserveAnnonce} />
                 <Stack.Screen name="CreatePlante" component={CreatePlante} />
@@ -96,7 +102,7 @@ function App({ navigation }) {
                 <Stack.Screen name="EditProfil" component={EditProfil} />
                 <Stack.Screen name="VisitProfil" component={VisitProfil} />
                 <Stack.Screen name="ConfirmCodeByMail" component={ConfirmCodeByMail} />
-                
+                <Stack.Screen name="BravoAnnonce" component={BravoAnnonce} />
 
             </Stack.Navigator>
         </NavigationContainer>

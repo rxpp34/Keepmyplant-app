@@ -20,7 +20,7 @@ function Map({ route }) {
     useEffect(() => {
         axios({  // POUR TROUVER UNE PLANTE SELON LA VILLE ET LES DATES
             method: "GET",
-            url: "http://codx.fr:8080/Search_plante_by_location_and_date/Montpellier/3/null/null"
+            url: "http://codx.fr:8080/Search_plante_by_location_and_date/Montpellier/1/null/null"
         }).then((response) => {
             setAnnonce(response.data)
         }).catch((err) => {

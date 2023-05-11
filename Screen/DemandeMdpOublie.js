@@ -51,7 +51,7 @@ function DemandeMdpOublie ()
                         method :'POST',
                         url : "http://codx.fr:8080/SendMailConfirmationCode/"+Mail
                     }).then((resp) => {
-                        navigation.navigate("ConfirmCodeByMail" , {_Mail :Mail, _Code : resp.data.Code})
+                        navigation.navigate("ConfirmCodeByMail" , {_Mail :Mail, _Code : resp.data.Code, _Mode :"Reset"})
                     })
                     
                 }

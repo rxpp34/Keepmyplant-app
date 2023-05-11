@@ -47,6 +47,11 @@ function Authentification ()
             <Pressable style={CSS.ConnectButton} onPress={Connect}>
                 <Text style={CSS.TextConnectButton}> Se connecter </Text>
             </Pressable>
+
+
+            <Pressable style={CSS.SignupButton} onPress={()=>{navigation.navigate("SignUp")}}>
+                <Text style={CSS.TextSignupButton}> Pas encore de compte ? Inscrivez-vous !  </Text>
+            </Pressable>
             </View>
         </TouchableWithoutFeedback>
         
@@ -62,9 +67,12 @@ const CSS=StyleSheet.create({
     },
     LogoImage : {
         height : 200,
-        width : '40%',
+        width : 200,
         marginTop :100,
-        marginLeft : '30%' 
+        marginLeft : '25%' ,
+        borderRadius : '50%',
+        borderWidth :3,
+        borderColor :"#46a094"
     },
     Input : {
         width : '100%',
@@ -108,6 +116,26 @@ const CSS=StyleSheet.create({
         color: 'white',
         padding : 15
 
+    },
+    SignupButton :{
+        marginTop : 80,
+        borderWidth : 3 ,
+        width :'90%',
+        textAlign :'center',
+        backgroundColor :"transparent",
+        borderColor : "#46a094",
+        borderRadius :7,
+        marginLeft : '5%'
+    },
+    TextSignupButton :
+    {
+        textAlign  : 'center', 
+        color :"#46a094",
+        fontSize: 14,
+        lineHeight: 21,
+        fontWeight: 'bold',
+        letterSpacing: 0.25,
+        padding : 15
     }
 })
 

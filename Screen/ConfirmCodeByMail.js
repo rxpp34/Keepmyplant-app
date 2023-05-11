@@ -53,9 +53,17 @@ function ConfirmCodeByMail()
             method :'POST',
             url :"http://codx.fr:8080/ValidateConfirmationCodeMail/"+route.params._Mail+"/"+route.params._Code
         }).then((resp) => {
-            if(resp.data='OK')
+            if(resp.data==='OK')
             {
-                navigation.navigate("ResetPassword", { _Mail : route.params._Mail})
+                if(route.params._Mode==="Reset")
+                {
+                    navigation.navigate("ResetPassword", { _Mail : route.params._Mail})
+                }
+                else
+                {
+                    navigation.navigate("Authentification")
+                }
+                
             }
             else
             {

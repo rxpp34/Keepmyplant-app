@@ -42,9 +42,10 @@ function Plante(props) {
         });
     }
 
-    function navigateToConseil(idtype) {
+    function navigateToConseil(idtype, libelle) {
         navigation.navigate("LesConseilsPourTypePlantes", {
             _idtype: idtype,
+            _libelle: libelle
         });
     }
 
@@ -76,7 +77,7 @@ function Plante(props) {
                     <Text style={styles.description}>{props.description}</Text>
                 </View>
 
-                <TouchableOpacity style={styles.buttonEnSavoirPlus} onPress={() => navigateToConseil(props.idtype)}>
+                <TouchableOpacity style={styles.buttonEnSavoirPlus} onPress={() => navigateToConseil(props.idtype, libelle)}>
                     <Text style={styles.buttonEnSavoirPlusText}>{libelle}</Text>
                 </TouchableOpacity>
             </View>

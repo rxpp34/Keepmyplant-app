@@ -48,7 +48,7 @@ function Annonce(props) {
 
                     </View>
                     <View style={styles.separator}></View>
-                    <Text style={styles.label}> <Text style={{fontWeight : 'bold'}}> Gardée par: </Text> {props.pseudoTest}</Text>
+                    <Text style={styles.label}> <Text style={{ fontWeight: 'bold' }}> Gardée par: </Text> {props.pseudoTest}</Text>
                     <Text style={styles.expertise}>{props.niveauExpertiseString}</Text>
                 </View>
                 <View style={styles.separator}></View>
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 16,
         color: "black",
-        marginTop : 10
+        marginTop: 10
     },
     separator: {
         height: 1,

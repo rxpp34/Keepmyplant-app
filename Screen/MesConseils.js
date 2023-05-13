@@ -3,28 +3,24 @@ import { ScrollView, View, Text, Pressable, StyleSheet } from "react-native";
 import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native";
 // ...
 import axios from "axios";
-import Plante from "../Component/Plante";
+import Conseil from "../Component/Conseil";
 
-function MesPlantes() {
-    const [PlantesList, setPlantes] = useState([]);
+function MesConseils() {
+    const [ConseilsList, setConseils] = useState([]);
     const navigation = useNavigation();
     const route = useRoute();
 
     useFocusEffect(
         React.useCallback(() => {
-            fetchPlantes();
+            ConseilBotanniste();
         }, [])
     );
 
-    const handleModifyPlante = (plante) => {
-        navigation.navigate('ModifyPlante', { plante, typesPlante: ListTypePlant });
-    };
-
-    const fetchPlantes = () => {
+    const ConseilBotanniste = () => {
         axios
-            .get("http://codx.fr:8080/GetPlantByUser/alicia.lefebvre@gmail.com")
+            .get("http://codx.fr:8080/GetConseilsByBotaniste/elodie.barbier@gmail.com")
             .then((response) => {
-                setPlantes(response.data);
+                setConseils(response.data);
             })
             .catch((error) => {
                 console.error(error);
@@ -33,29 +29,29 @@ function MesPlantes() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}> Mes Plantes </Text>
+            <Text style={styles.title}> Mes Conseils </Text>
             <View style={[styles.addButtonContainer, { marginBottom: 20 }]}>
                 <Pressable
                     style={styles.addButton}
                     onPress={() => {
-                        navigation.navigate('CreatePlante');
+                        navigation.navigate('CreateConseil');
                     }}
                 >
-                    <Text style={styles.addButtonLabel}>Ajouter une plante</Text>
+                    <Text style={styles.addButtonLabel}>Ajouter un conseil</Text>
                 </Pressable>
             </View>
 
 
             <ScrollView style={{ padding: 20 }}>
-                {PlantesList.map((item) => {
+                {ConseilsList.map((item) => {
                     return (
-                        <View key={item.idPlante} style={{ marginTop: 5 }}>
-                            <Plante
-                                idPlante={item.idPlante}
-                                url={item.urlPhoto}
-                                nom={item.nom}
+                        <View key={item.idConseil} style={{ marginTop: 5 }}>
+                            <Conseil
+                                idConseil={item.idConseil}
+                                titre={item.titre}
                                 description={item.description}
-                                idtype={item.idTypePlante}
+                                libelle={item.libelle}
+                                urlPhoto={item.urlPhoto}
                             />
                         </View>
                     );
@@ -63,6 +59,9 @@ function MesPlantes() {
             </ScrollView>
         </View>
     );
+
+
+
 }
 
 const styles = StyleSheet.create({
@@ -111,4 +110,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default MesPlantes;
+export default MesConseils;

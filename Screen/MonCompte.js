@@ -20,6 +20,14 @@ function MonCompte({ route }) {
 
             <View style={CSS.VerticalLine} />
 
+
+            <TouchableOpacity onPress={() => navigation.navigate('MesConseils')}>
+                <View style={CSS.ViewDemande}>
+                    <Image source={require('../assets/Demande.png')} style={{ width: 96, height: 96 }} />
+                    <Text style={CSS.TextDemande} > Mes conseils </Text>
+                </View>
+            </TouchableOpacity>
+
             <TouchableOpacity onPress={() => navigation.navigate('MesDemandes')}>
                 <View style={CSS.ViewDemande}>
                     <Image source={require('../assets/Demande.png')} style={{ width: 96, height: 96 }} />
@@ -41,14 +49,14 @@ function MonCompte({ route }) {
 
             <View style={CSS.VerticalLine} />
 
-            
+
 
             <View style={CSS.ViewInfoPerso}>
                 <Image source={require('../assets/Password.png')} style={{ width: 48, height: 48 }} />
                 <Text style={CSS.TextInfoPerso} > Réinitialiser mot de passe</Text>
             </View>
 
-            
+
 
             <Pressable style={CSS.Logout} >
                 <Text style={CSS.TextGoButton}> Se déconnecter </Text>

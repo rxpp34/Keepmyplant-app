@@ -7,6 +7,7 @@ function LesConseilsPourTypePlantes() {
     const navigation = useNavigation();
     const route = useRoute();
     const [idTypePlante, setidTypePlante] = useState(route.params._idtype);
+    const [libelle, setLibelle] = useState(route.params._libelle)
     const [AllConseils, setAllConseils] = useState([]);
     const [TypePlante, setTypePlante] = useState("");
 
@@ -36,8 +37,9 @@ function LesConseilsPourTypePlantes() {
     return (
         <View>
             <Pressable style={styles.PressableRetourRecherche} onPress={() => navigation.goBack()}>
-                <Text style={styles.PressableRetourRechercheText}> &lt; Retour </Text>
+                <Text style={{ color: "white", fontSize: 22 }}> &lt; Retour </Text>
             </Pressable>
+            <Text style={styles.title}> Conseil pour {libelle}</Text>
             <View style={styles.container}>
                 <View style={styles.photoCard}>
                     <Image source={{ uri: TypePlante.urlPhoto }} style={styles.image} />
@@ -47,7 +49,7 @@ function LesConseilsPourTypePlantes() {
 
             <View style={styles.conseilsContainer}>
                 <Text style={styles.conseilsTitle}>Liste des conseils</Text>
-                <ScrollView style={{ height: 400 }}>
+                <ScrollView>
                     {AllConseils.map((item, index) => (
                         <View key={index} style={styles.conseilCard}>
                             <View style={styles.conseilCardContent}>
@@ -67,12 +69,23 @@ function LesConseilsPourTypePlantes() {
 }
 
 const styles = StyleSheet.create({
-    PressableRetourRecherche: {
+
+    title:
+    {
+        fontSize: 26,
+        color: "#46a094",
+        fontWeight: "bold",
+        marginTop: 30,
+        marginLeft: '3%',
+    },
+
+    PressableRetourRecherche:
+    {
         marginTop: 60,
-        marginLeft: "3%",
+        marginLeft: '3%',
         borderWidth: 3,
-        width: "26%",
-        textAlign: "center",
+        width: '26%',
+        textAlign: 'center',
         backgroundColor: "#46a094",
         borderColor: "#46a094",
         borderRadius: 7,

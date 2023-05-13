@@ -20,6 +20,19 @@ function MonCompte({ route }) {
 
             <View style={CSS.VerticalLine} />
 
+            <TouchableOpacity onPress={() => navigation.navigate('MonAnnonceSuivisBotanniste')}>
+                <View style={CSS.ViewDemande}>
+                    <Image source={require('../assets/Demande.png')} style={{ width: 96, height: 96 }} />
+                    <Text style={CSS.TextDemande} > Mon suivis annonce B</Text>
+                </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => navigation.navigate('MonAnnonceSuivis')}>
+                <View style={CSS.ViewDemande}>
+                    <Image source={require('../assets/Demande.png')} style={{ width: 96, height: 96 }} />
+                    <Text style={CSS.TextDemande} > Mon suivis annonce </Text>
+                </View>
+            </TouchableOpacity>
 
             <TouchableOpacity onPress={() => navigation.navigate('MesConseils')}>
                 <View style={CSS.ViewDemande}>

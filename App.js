@@ -26,6 +26,8 @@ import MesConseils from "./Screen/MesConseils";
 import CreateConseil from "./Screen/CreateConseil";
 import ModifyConseil from "./Screen/ModifyConseil";
 import LesConseilsPourTypePlantes from "./Screen/LesConseilsPourTypePlantes";
+import MonAnnonceSuivis from "./Screen/MonAnnonceSuivis";
+import MonAnnonceSuivisBotanniste from "./Screen/MonAnnonceSuivisBotanniste";
 import Authentification from "./Screen/Authentification";
 import SignUp from "./Screen/SignUp"
 import BravoAnnonce from "./Screen/BravoAnnonce"
@@ -107,6 +109,8 @@ function App({ navigation }) {
                 <Stack.Screen name="CreateConseil" component={CreateConseil} />
                 <Stack.Screen name="ModifyConseil" component={ModifyConseil} />
                 <Stack.Screen name="LesConseilsPourTypePlantes" component={LesConseilsPourTypePlantes} />
+                <Stack.Screen name="MonAnnonceSuivis" component={MonAnnonceSuivis} />
+                <Stack.Screen name="MonAnnonceSuivisBotanniste" component={MonAnnonceSuivisBotanniste} />
 
             </Stack.Navigator>
         </NavigationContainer>

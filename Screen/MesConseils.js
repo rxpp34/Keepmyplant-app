@@ -29,7 +29,10 @@ function MesConseils() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}> Mes Conseils </Text>
+            <Pressable style={styles.PressableRetourRecherche} onPress={() => navigation.goBack()}>
+                <Text style={{ color: "white", fontSize: 22 }}> &lt; Retour </Text>
+            </Pressable>
+            <Text style={styles.title}> Mes conseils</Text>
             <View style={[styles.addButtonContainer, { marginBottom: 20 }]}>
                 <Pressable
                     style={styles.addButton}
@@ -102,11 +105,23 @@ const styles = StyleSheet.create({
     },
     title:
     {
-        fontSize: 42,
+        fontSize: 26,
         color: "#46a094",
         fontWeight: "bold",
-        marginTop: 50,
-        paddingTop: 20
+        marginTop: 30,
+        marginLeft: '3%',
+    },
+
+    PressableRetourRecherche:
+    {
+        marginTop: 60,
+        marginLeft: '3%',
+        borderWidth: 3,
+        width: '26%',
+        textAlign: 'center',
+        backgroundColor: "#46a094",
+        borderColor: "#46a094",
+        borderRadius: 7,
     },
 });
 

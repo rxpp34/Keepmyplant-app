@@ -12,7 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 function InfoPerso () 
 {
     const navigation=useNavigation() ; 
-    const route=useRoute ; 
+    const route=useRoute(); 
 
     const [idUser,setidUser]=useState()
     const [Nom,setNom]=useState("") ;

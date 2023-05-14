@@ -4,6 +4,7 @@ import {REACT_SERVER_APP} from "@env"
 import { useState } from "react";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
@@ -13,9 +14,9 @@ function Authentification ()
     const [Email,setEMail]=useState("")
     const [Password,setPassword]=useState("")
 
-    const StoreUserMail = async (value) => {
+     function StoreUserMail(value) {
         try {
-          await AsyncStorage.setItem("UserMail", value);
+           AsyncStorage.setItem("UserMail", value);
         } catch (error) {
           alert(error);
         }
@@ -37,7 +38,7 @@ function Authentification ()
             }
         })*/
 
-        StoreUserMail("alicia.lefebvre@gmail.com") ; 
+        StoreUserMail("serrano.jeremy@gmail.com") ; 
         navigation.navigate('HomeTabs');
 
     }

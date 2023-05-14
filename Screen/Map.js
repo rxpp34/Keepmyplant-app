@@ -17,23 +17,14 @@ function Map({ route }) {
     const [_initialRegion, setinitialRegion] = useState({})
     const [Annonce, setAnnonce] = useState([])
     const [SwitcherMode, setSwitcherMode] = useState(false)
-    const [UserMail,setUserMail]=useState("")
 
-    const GetUserMail = async () => {
+      const GetUserMail = async () => {
         try {
-          const value = await AsyncStorage.getItem("UserMail");
-          setUserMail(value);
-        } catch (error) {
-          alert(error);
-        }
-      };
-
-    useEffect(() => {
-        GetUserMail()
-        const url="http://codx.fr:8080/Search_plante_by_location_and_date/"+_Ville+"/"+_Niveau+"/null/null/r"+UserMail
+            const value = await AsyncStorage.getItem("UserMail");
+            
         axios({  // POUR TROUVER UNE PLANTE SELON LA VILLE ET LES DATES
             method: "GET",
-            url: "http://codx.fr:8080/Search_plante_by_location_and_date/"+_Ville+"/"+_Niveau+"/null/null/"+UserMail
+            url: "http://codx.fr:8080/Search_plante_by_location_and_date/"+_Ville+"/"+_Niveau+"/null/null/"+value
         }).then((response) => {
             if(response.data!='AUCUNE ANNONCE')
             {
@@ -42,7 +33,23 @@ function Map({ route }) {
         }).catch((err) => {
             console.log(url)
         })
-    })
+        } catch (error) {
+            alert(error);
+        }
+
+        
+  
+    };
+    
+    useEffect(() => {
+        GetUserMail();
+    }, []);
+
+
+
+
+
+
 
     function GoToReserve(data) {
         navigation.navigate("ReserveAnnonce",

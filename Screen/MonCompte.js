@@ -2,42 +2,86 @@ import react from "react";
 import { Text, View, Image, StyleSheet, TextInput, Pressable, ScrollView, Keyboard, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 function MonCompte() {
     const navigation = useNavigation();
-    const [User, setUser]=useState("")
-    const [UserMail, setUserMail]=useState("")
+    const [User, setUser] = useState("")
+    const [UserMail, setUserMail] = useState("")
 
-    
+    const [Annonce, setAnnonce] = useState("")
+    const [AnnonceReserve, setAnnonceReserve] = useState("")
+    const [AnnonceBotaniste, setAnnonceBotaniste] = useState("")
+
+
     const GetUserMail = async () => {
         try {
-          const value = await AsyncStorage.getItem("UserMail");
-          setUserMail(value);
+            const value = await AsyncStorage.getItem("UserMail");
+            axios({
+                method: 'GET',
+                url: "http://codx.fr:8080/GetUserByMail/" + value
+            }).then((resp) => {
+                setUser(resp.data[0])
+            }).catch((err) => {
+                alert(err)
+            });
         } catch (error) {
-          alert(error);
+            alert(error);
         }
-      };
 
+        try {
+            const value = await AsyncStorage.getItem("UserMail");
+            axios({
+                method: 'GET',
+                url: "http://codx.fr:8080/GetFollowAnnonce/" + value
+            }).then((resp) => {
+                setAnnonceBotaniste(resp.data[0])
+            }).catch((err) => {
+                alert(err)
+            });
+        } catch (error) {
+            alert(error);
+        }
 
+        try {
+            const value = await AsyncStorage.getItem("UserMail");
+            axios({
+                method: 'GET',
+                url: "http://codx.fr:8080/GetAnnoncesReserved/" + value
+            }).then((resp) => {
+                setAnnonceReserve(resp.data[0])
+            }).catch((err) => {
+                alert(err)
+            });
+        } catch (error) {
+            alert(error);
+        }
+
+        try {
+            const value = await AsyncStorage.getItem("UserMail");
+            axios({
+                method: 'GET',
+                url: "http://codx.fr:8080/GetAnnoncesActive/" + value
+            }).then((resp) => {
+                setAnnonceReserve(resp.data[0])
+            }).catch((err) => {
+                alert(err)
+            });
+        } catch (error) {
+            alert(error);
+        }
+    };
+    
     useEffect(() => {
-        GetUserMail()
-        axios({
-            method : 'GET',
-            url : "http://codx.fr:8080/GetUserByMail/" + UserMail 
-        }).then((resp) => {
-            setUser(resp.data[0])
-        }).catch((err) => {
-            alert(err)
-        });
-      },[])
+        GetUserMail();
+    }, []);
 
     return (
         <ScrollView style={CSS.MainView}>
             <Text style={CSS.title}> Mon Compte </Text>
 
-            <TouchableOpacity onPress={() => navigation.navigate('Profil', {_UserMail : UserMail})}>
+            <TouchableOpacity onPress={() => navigation.navigate('Profil', { _UserMail: User.mail })}>
                 <View style={CSS.ViewInfoPerso}>
                     <Image source={require('../assets/Info.png')} style={{ width: 48, height: 48 }} />
                     <Text style={CSS.TextInfoPerso} > Informations personnelles </Text>
@@ -45,60 +89,71 @@ function MonCompte() {
             </TouchableOpacity>
 
             <View style={CSS.VerticalLine} />
-        
-            {User.idRole===2 && 
-            
-            <TouchableOpacity onPress={() => navigation.navigate('MesConseils')}>
-            <View style={CSS.ViewDemande}>
-                <Image source={require('../assets/Demande.png')} style={{ width: 96, height: 96 }} />
-                <Text style={CSS.TextDemande} > Mes conseils </Text>
-            </View>
-            </TouchableOpacity>
-        
+
+            {User.idRole === 2 &&
+
+                <TouchableOpacity onPress={() => navigation.navigate('MesConseils')}>
+                    <View style={CSS.ViewDemande}>
+                        <Image source={require('../assets/Demande.png')} style={{ width: 96, height: 96 }} />
+                        <Text style={CSS.TextDemande} > Mes conseils </Text>
+                    </View>
+                </TouchableOpacity>
+
             }
 
-            
-            {User.idRole===2 && 
-            
-            <TouchableOpacity onPress={() => navigation.navigate('MonAnnonceSuivis')}>
-            <View style={CSS.ViewDemande}>
-                <Image source={require('../assets/Demande.png')} style={{ width: 96, height: 96 }} />
-                <Text style={CSS.TextDemande} > Mon suivis annonce </Text>
-            </View>
-            </TouchableOpacity>
-        
-            }
+            {User.idRole === 2 && AnnonceBotaniste && AnnonceBotaniste.length !== 0 && AnnonceBotaniste.active == 1 && (
 
-            {User.idRole===1 &&   
-            
+                <TouchableOpacity onPress={() => navigation.navigate('MonAnnonceSuivisBotanniste')}>
+                    <View style={CSS.ViewDemande}>
+                        <Image source={require('../assets/Demande.png')} style={{ width: 96, height: 96 }} />
+                        <Text style={CSS.TextDemande} > Mon suivis annonce </Text>
+                    </View>
+                </TouchableOpacity>
+
+            )}
+
+            {User.idRole === 1 && AnnonceReserve && AnnonceReserve.length !== 0 && AnnonceReserve.active == 1 && (
+
+                <TouchableOpacity onPress={() => navigation.navigate('MonAnnonceSuivis')}>
+                    <View style={CSS.ViewDemande}>
+                        <Image source={require('../assets/Demande.png')} style={{ width: 96, height: 96 }} />
+                        <Text style={CSS.TextDemande} > Mon suivis annonce </Text>
+                    </View>
+                </TouchableOpacity>
+
+            )}
+
+
+            {User.idRole === 1 && Annonce && Annonce.length !== 0 && (
+
                 <TouchableOpacity onPress={() => navigation.navigate('MesAnnonces')}>
-                <View style={CSS.ViewAnnonce}>
-                    <Image source={require('../assets/Annonce.png')} style={{ width: 96, height: 96 }} />
-                    <Text style={CSS.TextAnnonce} > Mes annonces postées</Text>
-                </View>
+                    <View style={CSS.ViewAnnonce}>
+                        <Image source={require('../assets/Annonce.png')} style={{ width: 96, height: 96 }} />
+                        <Text style={CSS.TextAnnonce} > Mes annonces postées</Text>
+                    </View>
                 </TouchableOpacity>
-            }
+            )}
 
 
-            {User.idRole===1 &&   
-            
+            {User.idRole === 1 &&
+
                 <TouchableOpacity onPress={() => navigation.navigate('MesDemandes')}>
-                <View style={CSS.ViewDemande}>
-                    <Image source={require('../assets/Demande.png')} style={{ width: 96, height: 96 }} />
-                    <Text style={CSS.TextDemande} > Mes demandes de gardinages </Text>
-                </View>
+                    <View style={CSS.ViewDemande}>
+                        <Image source={require('../assets/Demande.png')} style={{ width: 96, height: 96 }} />
+                        <Text style={CSS.TextDemande} > Mes demandes de gardinages </Text>
+                    </View>
                 </TouchableOpacity>
             }
 
 
-            {User.idRole===1 && 
+            {User.idRole === 1 &&
                 <View style={CSS.ViewAnnonce}>
                     <Image source={require('../assets/PlanteGarder.png')} style={{ width: 96, height: 96 }} />
                     <Text style={CSS.TextAnnonce} > Plantes Gardées </Text>
                 </View>
             }
 
-           
+
 
             <View style={CSS.VerticalLine} />
 

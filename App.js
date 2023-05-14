@@ -2,8 +2,10 @@ import * as React from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useEffect,useState } from "react";
 import { Text, View, Image, StyleSheet, TextInput, Button, Pressable, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import axios from "axios"
 import Home from "./Screen/Home";
 import Profil from "./Screen/Profil";
 import RechercheMap from "./Screen/RechercheMap";
@@ -37,6 +39,31 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 function Tabs({ navigation }) {
+
+    const [User,setUser]=useState([])
+    const GetUserMail = async () => {
+        try {
+            const value = await AsyncStorage.getItem("UserMail");
+            axios({
+                method: 'GET',
+                url: "http://codx.fr:8080/GetUserByMail/" + value
+            }).then((resp) => {
+                setUser(resp.data[0])
+            }).catch((err) => {
+                alert(err)
+            });
+        } catch (error) {
+            alert(error);
+        }
+    };
+    
+    useEffect(() => {
+        GetUserMail();
+    }, []);
+
+
+
+
     return (
 
         <Tab.Navigator tabBarOptions={{ showLabel: false }} screenOptions={{ headerShown: false, showLabel: false }}>
@@ -56,21 +83,30 @@ function Tabs({ navigation }) {
                     </View>)
             }} />
 
-            <Tab.Screen name="AddAnnonce" component={AddAnnonce} options={{
-                tabBarIcon: ({ focused }) => (
-                    <View style={{ alignItems: 'center', justifyContent: 'center', top: 14 }}>
-                        <Image source={require("./assets/icons/Add.png")} resizeMode="contain" style={{ width: 60, height: 60 }} />
-                        <Text style={{ fontSize: 12, color: "#46a094" }}></Text>
-                    </View>)
-            }} />
+           
 
-            <Tab.Screen name="Mes Plantes" component={MesPlantes} options={{
-                tabBarIcon: ({ focused }) => (
-                    <View style={{ alignItems: 'center', justifyContent: 'center', top: 14 }}>
-                        <Image source={require("./assets/icons/Plant.png")} resizeMode="contain" style={{ width: 25, height: 25 }} />
-                        <Text style={{ fontSize: 12, color: "#46a094" }}>Mes plantes</Text>
-                    </View>)
-            }} />
+            {
+                User.idRole===1 &&
+
+                <Tab.Screen name="Mes Plantes" component={MesPlantes} options={{
+                    tabBarIcon: ({ focused }) => (
+                        <View style={{ alignItems: 'center', justifyContent: 'center', top: 14 }}>
+                            <Image source={require("./assets/icons/Plant.png")} resizeMode="contain" style={{ width: 25, height: 25 }} />
+                            <Text style={{ fontSize: 12, color: "#46a094" }}>Mes plantes</Text>
+                        </View>)
+                }} />
+            }
+           
+           {
+                User.idRole===1 && 
+                <Tab.Screen name="AddAnnonce" component={AddAnnonce} options={{
+                    tabBarIcon: ({ focused }) => (
+                        <View style={{ alignItems: 'center', justifyContent: 'center', top: 14 }}>
+                            <Image source={require("./assets/icons/Add.png")} resizeMode="contain" style={{ width: 60, height: 60 }} />
+                            <Text style={{ fontSize: 12, color: "#46a094" }}></Text>
+                        </View>)
+                }} />
+           }
 
             <Tab.Screen name="MonCompte" component={MonCompte} options={{
                 tabBarIcon: ({ focused }) => (

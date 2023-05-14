@@ -2,11 +2,12 @@ import react, { useEffect, useState } from "react";
 import { Text, View,Image,StyleSheet,TextInput, Button,Pressable,TouchableWithoutFeedback,Dimensions} from "react-native";
 import axios from "axios"
 import {useNavigation} from '@react-navigation/native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function CardMap(props) 
 {
     const navigation  = useNavigation();
+    const [User, setUser] = useState("")
 
     
     const [Photo,setPhoto]=useState([])
@@ -20,6 +21,27 @@ function CardMap(props)
         })
     
     }, [])
+
+
+    const GetUserMail = async () => {
+        try {
+            const value = await AsyncStorage.getItem("UserMail");
+            axios({
+                method: 'GET',
+                url: "http://codx.fr:8080/GetUserByMail/" + value
+            }).then((resp) => {
+                setUser(resp.data[0])
+            }).catch((err) => {
+                alert(err)
+            });
+        } catch (error) {
+            alert(error);
+        }
+    };
+    
+    useEffect(() => {
+        GetUserMail();
+    }, []);
 
     function GoToReserve() 
     {
@@ -58,9 +80,18 @@ function CardMap(props)
             <Text style={{color :'#46a094' , fontWeight : 'bold' ,marginLeft : "3%", marginTop :70,fontSize : 20}}> Nombre de plante à garder : <Text> {Photo.length} </Text> </Text>
             <Text style={{color :'#46a094' , fontWeight : 'bold' ,marginLeft : "3%", marginTop :40,fontSize : 20}}> Reference : {props.reference}</Text>
 
-            <Pressable style={CSS.PressableButtonDemande} onPress={() => {GoToReserve()}}>
+            {User.idRole === 1 ? 
+                <Pressable style={CSS.PressableButtonDemande} onPress={() => {GoToReserve()}}>
                     <Text style={{color :"#18c924",fontSize : 22,padding : 5,fontWeight :'bold',textAlign :'center'}}> Détail et Réservation</Text>
-            </Pressable>
+                </Pressable>
+
+                :
+                <Pressable style={CSS.PressableButtonDemande} onPress={() => {GoToReserve()}}>
+                    <Text style={{color :"#18c924",fontSize : 22,padding : 5,fontWeight :'bold',textAlign :'center'}}> Détail et Suivi </Text>
+                </Pressable>
+
+            }
+           
              
         </Pressable>
     )

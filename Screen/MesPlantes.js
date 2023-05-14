@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ScrollView, View, Text, Pressable, StyleSheet } from "react-native";
 import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native";
-// ...
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from "axios";
 import Plante from "../Component/Plante";
 
@@ -9,6 +9,18 @@ function MesPlantes() {
     const [PlantesList, setPlantes] = useState([]);
     const navigation = useNavigation();
     const route = useRoute();
+    const [UserMail,setUserMail]=useState("")
+
+
+    const GetUserMail = async () => {
+        try {
+          const value = await AsyncStorage.getItem("UserMail");
+          setUserMail(value);
+        } catch (error) {
+          alert(error);
+        }
+      };
+
 
     useFocusEffect(
         React.useCallback(() => {
@@ -16,13 +28,17 @@ function MesPlantes() {
         }, [])
     );
 
+    
+
     const handleModifyPlante = (plante) => {
         navigation.navigate('ModifyPlante', { plante, typesPlante: ListTypePlant });
     };
 
     const fetchPlantes = () => {
+        GetUserMail()
+
         axios
-            .get("http://codx.fr:8080/GetPlantByUser/alicia.lefebvre@gmail.com")
+            .get("http://codx.fr:8080/GetPlantByUser/"+UserMail)
             .then((response) => {
                 setPlantes(response.data);
             })

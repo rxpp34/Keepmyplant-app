@@ -1,17 +1,43 @@
 import react from "react";
-import { Text, View, Image, StyleSheet, TextInput, Button, Pressable, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from "react-native";
+import { Text, View, Image, StyleSheet, TextInput, Pressable, ScrollView, Keyboard, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState,useEffect } from "react";
+import axios from "axios";
 
-
-
-function MonCompte({ route }) {
+function MonCompte() {
     const navigation = useNavigation();
+    const [User, setUser]=useState("")
+    const [UserMail, setUserMail]=useState("")
+
+    
+    const GetUserMail = async () => {
+        try {
+          const value = await AsyncStorage.getItem("UserMail");
+          setUserMail(value);
+        } catch (error) {
+          alert(error);
+        }
+      };
+
+
+    useEffect(() => {
+        GetUserMail()
+        axios({
+            method : 'GET',
+            url : "http://codx.fr:8080/GetUserByMail/" + UserMail 
+        }).then((resp) => {
+            setUser(resp.data[0])
+        }).catch((err) => {
+            alert(err)
+        });
+      },[])
 
     return (
-        <View style={CSS.MainView}>
+        <ScrollView style={CSS.MainView}>
             <Text style={CSS.title}> Mon Compte </Text>
 
-            <TouchableOpacity onPress={() => navigation.navigate('Profil')}>
+            <TouchableOpacity onPress={() => navigation.navigate('Profil', {_UserMail : UserMail})}>
                 <View style={CSS.ViewInfoPerso}>
                     <Image source={require('../assets/Info.png')} style={{ width: 48, height: 48 }} />
                     <Text style={CSS.TextInfoPerso} > Informations personnelles </Text>
@@ -19,46 +45,60 @@ function MonCompte({ route }) {
             </TouchableOpacity>
 
             <View style={CSS.VerticalLine} />
-
-            <TouchableOpacity onPress={() => navigation.navigate('MonAnnonceSuivisBotanniste')}>
-                <View style={CSS.ViewDemande}>
-                    <Image source={require('../assets/Demande.png')} style={{ width: 96, height: 96 }} />
-                    <Text style={CSS.TextDemande} > Mon suivis annonce B</Text>
-                </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => navigation.navigate('MonAnnonceSuivis')}>
-                <View style={CSS.ViewDemande}>
-                    <Image source={require('../assets/Demande.png')} style={{ width: 96, height: 96 }} />
-                    <Text style={CSS.TextDemande} > Mon suivis annonce </Text>
-                </View>
-            </TouchableOpacity>
-
+        
+            {User.idRole===2 && 
+            
             <TouchableOpacity onPress={() => navigation.navigate('MesConseils')}>
-                <View style={CSS.ViewDemande}>
-                    <Image source={require('../assets/Demande.png')} style={{ width: 96, height: 96 }} />
-                    <Text style={CSS.TextDemande} > Mes conseils </Text>
-                </View>
+            <View style={CSS.ViewDemande}>
+                <Image source={require('../assets/Demande.png')} style={{ width: 96, height: 96 }} />
+                <Text style={CSS.TextDemande} > Mes conseils </Text>
+            </View>
             </TouchableOpacity>
+        
+            }
 
-            <TouchableOpacity onPress={() => navigation.navigate('MesDemandes')}>
-                <View style={CSS.ViewDemande}>
-                    <Image source={require('../assets/Demande.png')} style={{ width: 96, height: 96 }} />
-                    <Text style={CSS.TextDemande} > Mes demandes de gardinages </Text>
-                </View>
+            
+            {User.idRole===2 && 
+            
+            <TouchableOpacity onPress={() => navigation.navigate('MonAnnonceSuivis')}>
+            <View style={CSS.ViewDemande}>
+                <Image source={require('../assets/Demande.png')} style={{ width: 96, height: 96 }} />
+                <Text style={CSS.TextDemande} > Mon suivis annonce </Text>
+            </View>
             </TouchableOpacity>
+        
+            }
 
-            <TouchableOpacity onPress={() => navigation.navigate('MesAnnonces')}>
+            {User.idRole===1 &&   
+            
+                <TouchableOpacity onPress={() => navigation.navigate('MesAnnonces')}>
                 <View style={CSS.ViewAnnonce}>
                     <Image source={require('../assets/Annonce.png')} style={{ width: 96, height: 96 }} />
                     <Text style={CSS.TextAnnonce} > Mes annonces postées</Text>
                 </View>
-            </TouchableOpacity>
+                </TouchableOpacity>
+            }
 
-            <View style={CSS.ViewAnnonce}>
-                <Image source={require('../assets/PlanteGarder.png')} style={{ width: 96, height: 96 }} />
-                <Text style={CSS.TextAnnonce} > Plantes Gardées </Text>
-            </View>
+
+            {User.idRole===1 &&   
+            
+                <TouchableOpacity onPress={() => navigation.navigate('MesDemandes')}>
+                <View style={CSS.ViewDemande}>
+                    <Image source={require('../assets/Demande.png')} style={{ width: 96, height: 96 }} />
+                    <Text style={CSS.TextDemande} > Mes demandes de gardinages </Text>
+                </View>
+                </TouchableOpacity>
+            }
+
+
+            {User.idRole===1 && 
+                <View style={CSS.ViewAnnonce}>
+                    <Image source={require('../assets/PlanteGarder.png')} style={{ width: 96, height: 96 }} />
+                    <Text style={CSS.TextAnnonce} > Plantes Gardées </Text>
+                </View>
+            }
+
+           
 
             <View style={CSS.VerticalLine} />
 
@@ -74,7 +114,7 @@ function MonCompte({ route }) {
             <Pressable style={CSS.Logout} >
                 <Text style={CSS.TextGoButton}> Se déconnecter </Text>
             </Pressable>
-        </View>
+        </ScrollView>
     )
 }
 

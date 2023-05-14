@@ -123,8 +123,7 @@ function RechercheMap ({navigation})
             url :"https://maps.googleapis.com/maps/api/geocode/json?address="+Ville+"&key=AIzaSyD580n6077mlkKAFPsp37g0lm-5ouuVEF4"
         }).then((resp) => {
                 navigation.navigate('Map', { _DateDebut: formatDate(DateDebut), _DateFin : formatDate(DateFin) , _Niveau : NiveauExpertise , _Ville : Ville ,
-                    Lat  : resp.data.results[0].geometry.location.lat,
-                    Lng : resp.data.results[0].geometry.location.lng
+                    Lat  : resp.data.results[0].geometry.location.lat,  Lng : resp.data.results[0].geometry.location.lng
             })
 
         })     }
@@ -134,7 +133,7 @@ function RechercheMap ({navigation})
         <View style={CSS.BigView}>
             <View style={CSS.ViewLabel}>
                 <Image source={require("../assets/icons8-plantation-à-la-main-90.png")} style={{marginTop : '5%'}}/>
-                <TextInput style={{color : 'white', textAlign : 'center', marginTop :'10%',fontSize :"15%"}}> Trouver les plantes prés de chez vous ! </TextInput>
+                <TextInput style={{color : 'white', textAlign : 'center', marginTop :'10%',fontSize :16}}> Trouver les plantes prés de chez vous ! </TextInput>
             </View>
 
             <View style={CSS.ViewInput}>

@@ -62,3 +62,14 @@ turtle : #C4EBC2
         shadowOffset: {
             width: 0,
             height: 4,
+
+
+
+
+
+<TouchableOpacity onPress={() => navigation.navigate('MonAnnonceSuivisBotanniste')}>
+                <View style={CSS.ViewDemande}>
+                    <Image source={require('../assets/Demande.png')} style={{ width: 96, height: 96 }} />
+                    <Text style={CSS.TextDemande} > Mon suivis annonce B</Text>
+                </View>
+            </TouchableOpacity>

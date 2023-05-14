@@ -3,13 +3,17 @@ import { Text, View,Image,StyleSheet,TextInput, Button,Pressable,TouchableWithou
 import { useState ,useEffect} from "react";
 import DateTimePicker from  "@react-native-community/datetimepicker" ;
 import axios from "axios"
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 
 function InfoPerso () 
 {
     const navigation=useNavigation() ; 
+    const route=useRoute ; 
+
     const [idUser,setidUser]=useState()
     const [Nom,setNom]=useState("") ;
     const [Prenom,setPrenom]=useState("")
@@ -21,12 +25,14 @@ function InfoPerso ()
     const [Rue,setRue]=useState("")
     const [Ville,setVille]=useState("")
     const [CP,setCP]=useState("")
+    const [UserMail,setUserMail]=useState(route.params._UserMail)
+
 
 
     useEffect(() => {
         axios({
             method : 'GET',
-            url : "http://codx.fr:8080/GetUserByMail/alicia.lefebvre@gmail.com"
+            url : "http://codx.fr:8080/GetUserByMail/"+UserMail
         }).then((resp) => {
             setidUser(resp.data[0].idUser)
             setNom(resp.data[0].nom)
@@ -38,7 +44,7 @@ function InfoPerso ()
 
         axios({
             method : 'GET',
-            url : "http://codx.fr:8080/GetAdresse/alicia.lefebvre@gmail.com"
+            url : "http://codx.fr:8080/GetAdresse/"+UserMail
         }).then((resp) => {
             setVoie(resp.data[0].voie)
             setRue(resp.data[0].rue)
@@ -58,7 +64,7 @@ function InfoPerso ()
             _Pseudo: Pseudo , 
             _PhotoDeProfil : Photodeprofil,
             _Telephone : Telephone , 
-            _Mail : "alicia.lefebvre@gmail.com",
+            _Mail : UserMail,
             _IdAdresse : IdAdresse,
             _Voie : Voie,
             _Rue : Rue , 
@@ -82,7 +88,7 @@ function InfoPerso ()
 
                 <View style={{marginBottom : 30}}>
                     <Text style={CSS.ViewTitle}> Adresse mail</Text>
-                    <Text style={CSS.ViewData}> alicia.lefebvre@gmail.com </Text>
+                    <Text style={CSS.ViewData}> {UserMail} </Text>
                 </View>
                 
 

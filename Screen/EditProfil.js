@@ -51,7 +51,7 @@ function EditProfil()
     {
         axios({
             method :"POST" ,
-            url :"http://codx.fr:8080/UpdateInfoProfil/"+Nom+"/"+Prenom+"/"+Telephone+"/"+idUser
+            url :"http://codx.fr:8080/UpdateInfoProfil/"+Nom+"/"+Prenom+"/"+Telephone+"/"+Pseudo+'/'+idUser
         }).then((resp) => {
             if(resp.data==="OK")
             {
@@ -61,6 +61,9 @@ function EditProfil()
                 })
             }
         })
+
+
+        navigation.goBack() ; 
     }
 
 

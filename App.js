@@ -1,4 +1,5 @@
 import * as React from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Text, View, Image, StyleSheet, TextInput, Button, Pressable, TouchableWithoutFeedback, Keyboard } from "react-native";
@@ -30,7 +31,6 @@ import MonAnnonceSuivis from "./Screen/MonAnnonceSuivis";
 import MonAnnonceSuivisBotanniste from "./Screen/MonAnnonceSuivisBotanniste";
 import Authentification from "./Screen/Authentification";
 import SignUp from "./Screen/SignUp"
-import BravoAnnonce from "./Screen/BravoAnnonce"
 
 
 const Tab = createBottomTabNavigator();
@@ -89,10 +89,11 @@ function App({ navigation }) {
     return (
         <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Authentification" component={Authentification} />
+
                 <Stack.Screen name="HomeTabs" component={Tabs} />
                 <Stack.Screen name="ResetPassword" component={ResetPassword} />
                 <Stack.Screen name="DemandeMdpOublie" component={DemandeMdpOublie} />
-
                 <Stack.Screen name="Map" component={Map} />
                 <Stack.Screen name="ReserveAnnonce" component={ReserveAnnonce} />
                 <Stack.Screen name="CreatePlante" component={CreatePlante} />

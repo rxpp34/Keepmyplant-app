@@ -4,6 +4,7 @@ import {REACT_SERVER_APP} from "@env"
 import { useState } from "react";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 function Authentification () 
@@ -12,9 +13,17 @@ function Authentification ()
     const [Email,setEMail]=useState("")
     const [Password,setPassword]=useState("")
 
+    const StoreUserMail = async (value) => {
+        try {
+          await AsyncStorage.setItem("UserMail", value);
+        } catch (error) {
+          alert(error);
+        }
+      };
+
     function Connect ()
     {
-        axios({
+        /*axios({
             method :'post',
             url : REACT_SERVER_APP+"Authentification/"+Email+"/"+Password
         }).then((resp) => {
@@ -26,7 +35,11 @@ function Authentification ()
             {
                 alert("Email ou mot de passe incorrecte ! ")
             }
-        })
+        })*/
+
+        StoreUserMail("alicia.lefebvre@gmail.com") ; 
+        navigation.navigate('HomeTabs');
+
     }
 
 
@@ -70,7 +83,7 @@ const CSS=StyleSheet.create({
         width : 200,
         marginTop :100,
         marginLeft : '25%' ,
-        borderRadius : '50%',
+        borderRadius : 50,
         borderWidth :3,
         borderColor :"#46a094"
     },

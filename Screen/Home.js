@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import { REACT_SERVER_APP } from '@env';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState } from "react";
 import { Text, View, Image, StyleSheet, TextInput, Button, Pressable, TouchableWithoutFeedback, Keyboard, Animated } from "react-native";
 import Logo from "../assets/Logo.png";
@@ -7,8 +7,24 @@ import Logo from "../assets/Logo.png";
 function Home({ navigation, route }) {
 
     const [fadeAnim] = useState(new Animated.Value(0)); // Initial value for opacity: 0
+    const [UserMail,setUserMail]=useState("")
 
-    useEffect(() => {
+
+
+    const GetUserMail = async () => {
+        try {
+          const value = await AsyncStorage.getItem("UserMail");
+          setUserMail(value);
+        } catch (error) {
+          alert(error);
+        }
+      };
+    
+
+
+    useEffect(() => {   
+        GetUserMail()
+        
         Animated.timing(
             fadeAnim,
             {
@@ -24,7 +40,7 @@ function Home({ navigation, route }) {
             <View style={styles.logoContainer}>
                 <Image source={Logo} style={styles.logo} />
             </View>
-            <Animated.Text style={[styles.welcome, { opacity: fadeAnim }]}>Bienvenue</Animated.Text>
+            <Animated.Text style={[styles.welcome, { opacity: fadeAnim }]}>Bienvenue ! </Animated.Text>
             <Animated.View style={[styles.Site, { opacity: fadeAnim, transform: [{ translateY: fadeAnim.interpolate({ inputRange: [0, 1], outputRange: [-50, 0] }) }] }]}>
                 <Animated.Text style={[styles.title, { opacity: fadeAnim }]}>Notre site</Animated.Text>
                 <Animated.Text style={[styles.text, { opacity: fadeAnim }]}>

@@ -89,7 +89,7 @@ function CreatePlante() {
         const selectedPhotoUri = await AsyncStorage.getItem('selectedPhotoUri'); // Récupère l'URL enregistrée
         GetUserMail()
         axios
-            .post('http://codx.fr:8080/CreatePlanteByUser/' + User.mail + '/' + Nom + '/' + Description + '/' + selectedTypePlante.idTypePlante, {
+            .post("http://codx.fr:8080/CreatePlanteByUser/" + User.mail + "/" + Nom + "/" + Description + "/" + selectedTypePlante.idTypePlante, {
                 url: selectedPhotoUri,
             })
             .then((resp) => {

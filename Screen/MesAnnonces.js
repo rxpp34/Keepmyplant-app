@@ -26,10 +26,6 @@ function MesAnnonces() {
         }
     };
 
-    useEffect(() => {
-        TrouverAnnonces();
-        GetUserMail();
-    }, []);
 
     const TrouverAnnonces = () => {
         axios
@@ -41,6 +37,11 @@ function MesAnnonces() {
                 console.error(error);
             });
     };
+
+    useEffect(() => {
+        GetUserMail();
+        TrouverAnnonces();
+    }, []);
 
 
     return (

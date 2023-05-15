@@ -36,6 +36,7 @@ function AnnonceSuivisBotanniste() {
     useEffect(() => {
         GetUserMail();
     }, []);
+
     // comportement
     useEffect(() => {
         axios({
@@ -72,7 +73,7 @@ function AnnonceSuivisBotanniste() {
     function UpdatePhotos(idPhoto) {
         axios({
             method: "POST",
-            url: "http://codx.fr:8080/AddCommentsForFollow/antoine.meyer@gmail.com/" + AnnonceReserve.idAnnonce + "/" + idPhoto,
+            url: "http://codx.fr:8080/AddCommentsForFollow/" + User.mail + "/" + AnnonceReserve.idAnnonce + "/" + idPhoto,
             data: {
                 description: _description,
             }

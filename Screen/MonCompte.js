@@ -64,7 +64,7 @@ function MonCompte() {
                 method: 'GET',
                 url: "http://codx.fr:8080/GetAnnoncesActive/" + value
             }).then((resp) => {
-                setAnnonceReserve(resp.data[0])
+                setAnnonce(resp.data[0])
             }).catch((err) => {
                 alert(err)
             });

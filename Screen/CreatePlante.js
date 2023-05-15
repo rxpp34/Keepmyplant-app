@@ -25,6 +25,7 @@ function CreatePlante() {
         setIsDropdownOpen(!isDropdownOpen);
     };
 
+
     const GetUserMail = async () => {
         try {
             const value = await AsyncStorage.getItem("UserMail");
@@ -39,8 +40,12 @@ function CreatePlante() {
         } catch (error) {
             alert(error);
         }
-    }
-    
+    };
+
+    useEffect(() => {
+        GetUserMail();
+    }, []);
+
 
     const handleSelectTypePlante = (typePlante) => {
         setSelectedTypePlante(typePlante);
@@ -85,20 +90,21 @@ function CreatePlante() {
         }
     };
 
-    function SubmitPlante () {
-        const formData = new FormData()
-        formData.append("image", imageFTP)
-        alert(imageFTP.type.split("/")[1])
-
-        axios.post("http://codx.fr:8080/CreatePlanteByUser/"+User.mail+"/"+Nom+"/"+Description+"/"+selectedTypePlante.idTypePlante+"/"+imageFTP.type.split("/")[1], formData, { headers: {'Content-Type': 'multipart/form-data'}})
-        .then((resp) => {
-            if(resp.data==='OK')
-            {
-                navigation.navigate('MesPlantes')
-            }
-        })
-       
-           
+    const SubmitPlante = async () => {
+        const selectedPhotoUri = await AsyncStorage.getItem('selectedPhotoUri'); // Récupère l'URL enregistrée
+        GetUserMail()
+        axios
+            .post('http://codx.fr:8080/CreatePlanteByUser/' + User.mail + '/' + Nom + '/' + Description + '/' + selectedTypePlante.idTypePlante, {
+                url: selectedPhotoUri,
+            })
+            .then((resp) => {
+                if (resp.data === 'OK') {
+                    navigation.navigate('Mes Plantes');
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     return (

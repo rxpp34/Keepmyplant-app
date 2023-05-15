@@ -1,20 +1,39 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, View, Text, StyleSheet ,Pressable} from "react-native";
+import { ScrollView, View, Text, StyleSheet, Pressable } from "react-native";
 import axios from "axios";
 import Annonce from "../Component/Annonce";
 import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function MesAnnonces() {
     const [annonceList, setAnnonces] = useState([]);
     const navigation = useNavigation();
-    
+    const [User, setUser] = useState("")
+
+    const GetUserMail = async () => {
+        try {
+            const value = await AsyncStorage.getItem("UserMail");
+            axios({
+                method: 'GET',
+                url: "http://codx.fr:8080/GetUserByMail/" + value
+            }).then((resp) => {
+                setUser(resp.data[0])
+            }).catch((err) => {
+                alert(err)
+            });
+        } catch (error) {
+            alert(error);
+        }
+    };
+
     useEffect(() => {
         TrouverAnnonces();
+        GetUserMail();
     }, []);
 
     const TrouverAnnonces = () => {
         axios
-            .get("http://codx.fr:8080/LoadPostAnnonces/alicia.lefebvre@gmail.com")
+            .get("http://codx.fr:8080/LoadPostAnnonces/" + User.mail)
             .then((response) => {
                 setAnnonces(response.data);
             })
@@ -32,7 +51,7 @@ function MesAnnonces() {
             <Text style={styles.title}> Mes annonces postés</Text>
 
 
-            <ScrollView style={{marginTop : 30}}>
+            <ScrollView style={{ marginTop: 30 }}>
                 {annonceList.map((item) => (
                     <View key={item.idAnnonce} style={styles.annonceContainer}>
                         <Annonce

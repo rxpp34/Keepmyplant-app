@@ -8,6 +8,27 @@ import Demande from "../Component/Demande";
 function MesDemandes() {
     const [DemandeList, setDemandes] = useState([]);
     const navigation = useNavigation();
+    const [User, setUser] = useState("")
+
+    const GetUserMail = async () => {
+        try {
+            const value = await AsyncStorage.getItem("UserMail");
+            axios({
+                method: 'GET',
+                url: "http://codx.fr:8080/GetUserByMail/" + value
+            }).then((resp) => {
+                setUser(resp.data[0])
+            }).catch((err) => {
+                alert(err)
+            });
+        } catch (error) {
+            alert(error);
+        }
+    };
+
+    useEffect(() => {
+        GetUserMail();
+    }, []);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -17,7 +38,7 @@ function MesDemandes() {
 
     const Reservation = () => {
         axios
-            .get("http://codx.fr:8080/GetReservation/alicia.lefebvre@gmail.com")
+            .get("http://codx.fr:8080/GetReservation/" + User.mail)
             .then((response) => {
                 setDemandes(response.data);
             })
@@ -60,7 +81,7 @@ const styles = StyleSheet.create({
     scrollViewContent: {
         flexGrow: 1,
         paddingBottom: 20,
-        marginTop : 30,
+        marginTop: 30,
     },
     title:
     {

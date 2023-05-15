@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import axios from "axios";
 import { View, Text, Image, TextInput, TouchableOpacity, StyleSheet, Pressable, ScrollView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -14,12 +15,32 @@ function AnnonceSuivisBotanniste() {
     const [Proprio, setProprio] = useState("")
     const [_description, setDescription] = useState("")
     const currentDate = new Date(); // pour controle lors de l'ajout de la photo 
+    const [User, setUser] = useState("")
 
+    const GetUserMail = async () => {
+        try {
+            const value = await AsyncStorage.getItem("UserMail");
+            axios({
+                method: 'GET',
+                url: "http://codx.fr:8080/GetUserByMail/" + value
+            }).then((resp) => {
+                setUser(resp.data[0])
+            }).catch((err) => {
+                alert(err)
+            });
+        } catch (error) {
+            alert(error);
+        }
+    };
+
+    useEffect(() => {
+        GetUserMail();
+    }, []);
     // comportement
     useEffect(() => {
         axios({
             method: 'GET',
-            url: "http://codx.fr:8080/GetFollowAnnonce/antoine.meyer@gmail.com"
+            url: "http://codx.fr:8080/GetFollowAnnonce/" + User.mail
         }).then((resp) => {
             setAnnonceReserve(resp.data[0])
         });

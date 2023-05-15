@@ -16,22 +16,34 @@ function CreatePlante() {
     const [imageUrl, setImageUrl] = useState('');
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [selectedTypePlante, setSelectedTypePlante] = useState(null);
-    const [UserMail,setUserMail]=useState("")
+    const [User, setUser] = useState("")
 
 
     const handleToggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
 
+
     const GetUserMail = async () => {
         try {
-          const value = await AsyncStorage.getItem("UserMail");
-          setUserMail(value);
+            const value = await AsyncStorage.getItem("UserMail");
+            axios({
+                method: 'GET',
+                url: "http://codx.fr:8080/GetUserByMail/" + value
+            }).then((resp) => {
+                setUser(resp.data[0])
+            }).catch((err) => {
+                alert(err)
+            });
         } catch (error) {
-          alert(error);
+            alert(error);
         }
-      };
-    
+    };
+
+    useEffect(() => {
+        GetUserMail();
+    }, []);
+
 
     const handleSelectTypePlante = (typePlante) => {
         setSelectedTypePlante(typePlante);
@@ -77,7 +89,7 @@ function CreatePlante() {
         const selectedPhotoUri = await AsyncStorage.getItem('selectedPhotoUri'); // Récupère l'URL enregistrée
         GetUserMail()
         axios
-            .post('http://codx.fr:8080/CreatePlanteByUser/'+UserMail+'/'+Nom+'/'+Description+'/'+selectedTypePlante.idTypePlante, {
+            .post('http://codx.fr:8080/CreatePlanteByUser/' + User.mail + '/' + Nom + '/' + Description + '/' + selectedTypePlante.idTypePlante, {
                 url: selectedPhotoUri,
             })
             .then((resp) => {

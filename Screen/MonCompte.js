@@ -72,7 +72,7 @@ function MonCompte() {
             alert(error);
         }
     };
-    
+
     useEffect(() => {
         GetUserMail();
     }, []);

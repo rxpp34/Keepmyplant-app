@@ -4,11 +4,33 @@ import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/nativ
 // ...
 import axios from "axios";
 import GestionDemande from "../Component/GestionDemande";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function GestionDemandeAnnonce() {
     const [DemandeList, setDemandes] = useState([]);
     const navigation = useNavigation();
     const route = useRoute();
+    const [User, setUser] = useState("")
+
+    const GetUserMail = async () => {
+        try {
+            const value = await AsyncStorage.getItem("UserMail");
+            axios({
+                method: 'GET',
+                url: "http://codx.fr:8080/GetUserByMail/" + value
+            }).then((resp) => {
+                setUser(resp.data[0])
+            }).catch((err) => {
+                alert(err)
+            });
+        } catch (error) {
+            alert(error);
+        }
+    };
+
+    useEffect(() => {
+        GetUserMail();
+    }, []);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -18,7 +40,7 @@ function GestionDemandeAnnonce() {
 
     const Reservation = () => {
         axios
-            .get("http://codx.fr:8080/GetReservationAnnonce/alicia.lefebvre@gmail.com")
+            .get("http://codx.fr:8080/GetReservationAnnonce/" + User.mail)
             .then((response) => {
                 setDemandes(response.data);
             })

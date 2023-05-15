@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Image, TouchableOpacity, ScrollView, StyleSheet, Pressable } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 function CreatePlante() {
@@ -14,6 +15,28 @@ function CreatePlante() {
     const [imageUrl, setImageUrl] = useState('');
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [selectedTypePlante, setSelectedTypePlante] = useState(null);
+
+    const [User, setUser] = useState("")
+
+    const GetUserMail = async () => {
+        try {
+            const value = await AsyncStorage.getItem("UserMail");
+            axios({
+                method: 'GET',
+                url: "http://codx.fr:8080/GetUserByMail/" + value
+            }).then((resp) => {
+                setUser(resp.data[0])
+            }).catch((err) => {
+                alert(err)
+            });
+        } catch (error) {
+            alert(error);
+        }
+    };
+
+    useEffect(() => {
+        GetUserMail();
+    }, []);
 
     const handleToggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
@@ -45,7 +68,7 @@ function CreatePlante() {
             .then((resp) => {
                 axios({
                     method: 'POST',
-                    url: `http://codx.fr:8080/CreateConseil/elodie.barbier@gmail.com/${selectedTypePlante.idTypePlante}`,
+                    url: "http://codx.fr:8080/CreateConseil/" + User.mail + "/${selectedTypePlante.idTypePlante}",
                     data: {
                         titre: Titre,
                         description: Description,

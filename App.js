@@ -2,7 +2,7 @@ import * as React from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { Text, View, Image, StyleSheet, TextInput, Button, Pressable, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import axios from "axios"
@@ -40,7 +40,7 @@ const Stack = createNativeStackNavigator();
 
 function Tabs({ navigation }) {
 
-    const [User,setUser]=useState([])
+    const [User, setUser] = useState([])
     const GetUserMail = async () => {
         try {
             const value = await AsyncStorage.getItem("UserMail");
@@ -56,7 +56,7 @@ function Tabs({ navigation }) {
             alert(error);
         }
     };
-    
+
     useEffect(() => {
         GetUserMail();
     }, []);
@@ -83,10 +83,21 @@ function Tabs({ navigation }) {
                     </View>)
             }} />
 
-           
+
+
 
             {
-                User.idRole===1 &&
+                User.idRole === 1 &&
+                <Tab.Screen name="AddAnnonce" component={AddAnnonce} options={{
+                    tabBarIcon: ({ focused }) => (
+                        <View style={{ alignItems: 'center', justifyContent: 'center', top: 14 }}>
+                            <Image source={require("./assets/icons/Add.png")} resizeMode="contain" style={{ width: 60, height: 60 }} />
+                            <Text style={{ fontSize: 12, color: "#46a094" }}></Text>
+                        </View>)
+                }} />
+            }
+            {
+                User.idRole === 1 &&
 
                 <Tab.Screen name="Mes Plantes" component={MesPlantes} options={{
                     tabBarIcon: ({ focused }) => (
@@ -96,17 +107,6 @@ function Tabs({ navigation }) {
                         </View>)
                 }} />
             }
-           
-           {
-                User.idRole===1 && 
-                <Tab.Screen name="AddAnnonce" component={AddAnnonce} options={{
-                    tabBarIcon: ({ focused }) => (
-                        <View style={{ alignItems: 'center', justifyContent: 'center', top: 14 }}>
-                            <Image source={require("./assets/icons/Add.png")} resizeMode="contain" style={{ width: 60, height: 60 }} />
-                            <Text style={{ fontSize: 12, color: "#46a094" }}></Text>
-                        </View>)
-                }} />
-           }
 
             <Tab.Screen name="MonCompte" component={MonCompte} options={{
                 tabBarIcon: ({ focused }) => (
@@ -125,7 +125,7 @@ function App({ navigation }) {
     return (
         <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Authentification" component={Authentification} />
+                <Stack.Screen name="Authentification" component={Authentification} />
 
                 <Stack.Screen name="HomeTabs" component={Tabs} />
                 <Stack.Screen name="ResetPassword" component={ResetPassword} />

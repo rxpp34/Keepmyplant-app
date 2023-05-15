@@ -1,7 +1,7 @@
 import react from "react";
-import { Text, View,Image,StyleSheet,TextInput, Button,Pressable,TouchableWithoutFeedback,Keyboard } from "react-native";
-import { useState ,useEffect} from "react";
-import DateTimePicker from  "@react-native-community/datetimepicker" ;
+import { Text, View, Image, StyleSheet, TextInput, Button, Pressable, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { useState, useEffect } from "react";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import axios from "axios"
 import { useNavigation, useRoute } from "@react-navigation/native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -9,30 +9,28 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
-function InfoPerso () 
-{
-    const navigation=useNavigation() ; 
-    const route=useRoute(); 
+function InfoPerso() {
+    const navigation = useNavigation();
+    const route = useRoute();
 
-    const [idUser,setidUser]=useState()
-    const [Nom,setNom]=useState("") ;
-    const [Prenom,setPrenom]=useState("")
-    const [Telephone,setTelephone]=useState("")
-    const [Pseudo,setPseudo]=useState("")
-    const [Photodeprofil,setPhotodeprofil]=useState("")
-    const [IdAdresse,setIdAdresse]=useState()
-    const [Voie,setVoie]=useState("")
-    const [Rue,setRue]=useState("")
-    const [Ville,setVille]=useState("")
-    const [CP,setCP]=useState("")
-    const [UserMail,setUserMail]=useState(route.params._UserMail)
-
+    const [idUser, setidUser] = useState()
+    const [Nom, setNom] = useState("");
+    const [Prenom, setPrenom] = useState("")
+    const [Telephone, setTelephone] = useState("")
+    const [Pseudo, setPseudo] = useState("")
+    const [Photodeprofil, setPhotodeprofil] = useState("")
+    const [IdAdresse, setIdAdresse] = useState()
+    const [Voie, setVoie] = useState("")
+    const [Rue, setRue] = useState("")
+    const [Ville, setVille] = useState("")
+    const [CP, setCP] = useState("")
+    const [UserMail, setUserMail] = useState(route.params._UserMail)
 
 
     useEffect(() => {
         axios({
-            method : 'GET',
-            url : "http://codx.fr:8080/GetUserByMail/"+UserMail
+            method: 'GET',
+            url: "http://codx.fr:8080/GetUserByMail/" + UserMail
         }).then((resp) => {
             setidUser(resp.data[0].idUser)
             setNom(resp.data[0].nom)
@@ -43,8 +41,8 @@ function InfoPerso ()
         });
 
         axios({
-            method : 'GET',
-            url : "http://codx.fr:8080/GetAdresse/"+UserMail
+            method: 'GET',
+            url: "http://codx.fr:8080/GetAdresse/" + UserMail
         }).then((resp) => {
             setVoie(resp.data[0].voie)
             setRue(resp.data[0].rue)
@@ -53,130 +51,129 @@ function InfoPerso ()
             setIdAdresse(resp.data[0].idAdresse)
         });
 
-}, [])
+    }, [])
 
-    function GoEditProfil() 
-    {
+    function GoEditProfil() {
         navigation.navigate("EditProfil", {
             _IdUser: idUser,
-            _Nom : Nom,
-            _Prenom : Prenom,
-            _Pseudo: Pseudo , 
-            _PhotoDeProfil : Photodeprofil,
-            _Telephone : Telephone , 
-            _Mail : UserMail,
-            _IdAdresse : IdAdresse,
-            _Voie : Voie,
-            _Rue : Rue , 
-            _CP : CP , 
+            _Nom: Nom,
+            _Prenom: Prenom,
+            _Pseudo: Pseudo,
+            _PhotoDeProfil: Photodeprofil,
+            _Telephone: Telephone,
+            _Mail: UserMail,
+            _IdAdresse: IdAdresse,
+            _Voie: Voie,
+            _Rue: Rue,
+            _CP: CP,
             _Ville: Ville
         })
     }
 
-    return(
-        <View style={{width : "100%",height: '100%'}}>
+    return (
+        <View style={{ width: "100%", height: '100%' }}>
             <View style={CSS.ViewBackGround}>
-                <Pressable style={CSS.PressableRetour} onPress={() => navigation.goBack()}> 
-                    <Text style={{color :"#46a094",fontSize : 22}}> &lt; Retour </Text>
+                <Pressable style={CSS.PressableRetour} onPress={() => navigation.goBack()}>
+                    <Text style={{ color: "#46a094", fontSize: 22 }}> &lt; Retour </Text>
                 </Pressable>
             </View>
 
             <View style={CSS.ViewProfil}>
-                <Image source={{uri : Photodeprofil}} style={CSS.PhotoProfil}/>
-                <Text style={{textAlign :'center',color :'grey',fontSize : 18}}>{Pseudo} </Text>
+                <Image source={{ uri: Photodeprofil }} style={CSS.PhotoProfil} />
+                <Text style={{ textAlign: 'center', color: 'grey', fontSize: 18 }}>{Pseudo} </Text>
                 <Text style={CSS.NomPrenom}>{Prenom} {Nom} </Text>
 
-                <View style={{marginBottom : 30}}>
+                <View style={{ marginBottom: 30 }}>
                     <Text style={CSS.ViewTitle}> Adresse mail</Text>
                     <Text style={CSS.ViewData}> {UserMail} </Text>
                 </View>
-                
 
-                <View style={{marginBottom : 30}}>
+
+                <View style={{ marginBottom: 30 }}>
                     <Text style={CSS.ViewTitle}> Téléphone </Text>
                     <Text style={CSS.ViewData}> {Telephone} </Text>
                 </View>
 
-                <View style={{marginBottom : 30}}>
+                <View style={{ marginBottom: 30 }}>
                     <Text style={CSS.ViewTitle}> Adresse </Text>
                     <Text style={CSS.ViewData}> {Voie} {Rue} {CP} - {Ville} </Text>
                 </View>
 
-                <Pressable style={CSS.Modifier} onPress={() => {GoEditProfil()}}>
+                <Pressable style={CSS.Modifier} onPress={() => { GoEditProfil() }}>
                     <Text style={CSS.TextGoButton}> Modifier </Text>
                 </Pressable>
             </View>
         </View>
-        
+
     )
 }
 
 
-const CSS= StyleSheet.create({
-    ViewBackGround : 
+const CSS = StyleSheet.create({
+    ViewBackGround:
     {
-        width : '100%',
-        height : 600,
-        backgroundColor : '#46a094',
-        borderBottomLeftRadius : '50%',
-        borderBottomRightRadius : '50%'
+        width: '100%',
+        height: 600,
+        backgroundColor: '#46a094',
+        borderBottomLeftRadius: '50%',
+        borderBottomRightRadius: '50%'
     },
 
-    PressableRetour : {
-        marginTop : 60,
-        marginLeft : '3%',
-        borderWidth : 3 ,
-        width :'27%',
-        textAlign :'center',
-        backgroundColor :"white",
-        position : "relative",
-        borderColor : "white",
-        borderRadius :7,
+    PressableRetour: {
+        marginTop: 60,
+        marginLeft: '3%',
+        borderWidth: 3,
+        width: '27%',
+        textAlign: 'center',
+        backgroundColor: "white",
+        position: "relative",
+        borderColor: "white",
+        borderRadius: 7,
     },
 
-    ViewProfil : 
+    ViewProfil:
     {
-        backgroundColor : 'white',
-        width : "94%",
-        height : 650,
-        position : "absolute",
-        top : 150,
-        marginLeft : '3%', 
-        borderRadius : 10
+        backgroundColor: 'white',
+        width: "94%",
+        height: 650,
+        position: "absolute",
+        top: 150,
+        marginLeft: '3%',
+        borderRadius: 10
     },
 
-    PhotoProfil : 
+    PhotoProfil:
     {
-        width : 150,
-        height : 150,
-        borderRadius : "50%",
-        alignItems : 'center',
-        marginLeft : "30%",
-        position : "relative" , 
-        top : -50
+        width: 150,
+        height: 150,
+        borderRadius: "50%",
+        alignItems: 'center',
+        marginLeft: "30%",
+        position: "relative",
+        top: -50
     },
 
-    NomPrenom : {   
-        fontSize : 27,
-        color : "#46a094",
-        fontWeight : 'bold',
-        textAlign :'center',
-        marginTop : 0,
-        marginBottom : 40
-        
+    NomPrenom: {
+        fontSize: 27,
+        color: "#46a094",
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginTop: 0,
+        marginBottom: 40
+
     },
 
-    ViewTitle : 
+    ViewTitle:
     {
-        color : 'grey',
-        fontSize : 26,
-        marginLeft : '3%'
+        color: 'grey',
+        fontSize: 26,
+        marginLeft: '3%'
     },
 
-    ViewData : {
-        color : "#46a094",
-        fontSize : 24,
-        marginLeft : "10%"
+    ViewData: {
+        color: "#46a094",
+        fontSize: 24,
+        marginLeft: "10%"
     },
     Modifier: {
         marginTop: 40,
@@ -203,4 +200,4 @@ const CSS= StyleSheet.create({
     }
 })
 
-export default InfoPerso ; 
+export default InfoPerso; 

@@ -3,28 +3,34 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState } from "react";
 import { Text, View, Image, StyleSheet, TextInput, Button, Pressable, TouchableWithoutFeedback, Keyboard, Animated } from "react-native";
 import Logo from "../assets/Logo.png";
+import axios from "axios";
 
 function Home({ navigation, route }) {
 
     const [fadeAnim] = useState(new Animated.Value(0)); // Initial value for opacity: 0
-    const [UserMail,setUserMail]=useState("")
-
-
+    const [User, setUser] = useState("")
 
     const GetUserMail = async () => {
         try {
-          const value = await AsyncStorage.getItem("UserMail");
-          setUserMail(value);
+            const value = await AsyncStorage.getItem("UserMail");
+            axios({
+                method: 'GET',
+                url: "http://codx.fr:8080/GetUserByMail/" + value
+            }).then((resp) => {
+                setUser(resp.data[0])
+            }).catch((err) => {
+                alert(err)
+            });
         } catch (error) {
-          alert(error);
+            alert(error);
         }
-      };
-    
+    };
 
 
-    useEffect(() => {   
+
+    useEffect(() => {
         GetUserMail()
-        
+
         Animated.timing(
             fadeAnim,
             {

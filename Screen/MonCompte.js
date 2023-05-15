@@ -158,11 +158,12 @@ function MonCompte() {
             <View style={CSS.VerticalLine} />
 
 
-
+            <TouchableOpacity onPress={() => navigation.navigate('ResetPasswordFromProfil')}>
             <View style={CSS.ViewInfoPerso}>
                 <Image source={require('../assets/Password.png')} style={{ width: 48, height: 48 }} />
                 <Text style={CSS.TextInfoPerso} > Réinitialiser mot de passe</Text>
             </View>
+            </TouchableOpacity>
 
 
 

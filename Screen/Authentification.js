@@ -38,7 +38,7 @@ function Authentification ()
             }
         })*/
 
-        StoreUserMail("serrano.jeremy@gmail.com") ; 
+        StoreUserMail("hug.sastrepro@gmail.com") ; 
         navigation.navigate('HomeTabs');
 
     }

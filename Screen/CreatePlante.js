@@ -16,7 +16,9 @@ function CreatePlante() {
     const [imageUrl, setImageUrl] = useState('');
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [selectedTypePlante, setSelectedTypePlante] = useState(null);
+    const [imageFTP,setImageFTP]=useState()
     const [UserMail,setUserMail]=useState("")
+    const [User,setUser]=useState()
 
 
     const handleToggleDropdown = () => {
@@ -25,12 +27,19 @@ function CreatePlante() {
 
     const GetUserMail = async () => {
         try {
-          const value = await AsyncStorage.getItem("UserMail");
-          setUserMail(value);
+            const value = await AsyncStorage.getItem("UserMail");
+            axios({
+                method: 'GET',
+                url: "http://codx.fr:8080/GetUserByMail/" + value
+            }).then((resp) => {
+                setUser(resp.data[0])
+            }).catch((err) => {
+                alert(err)
+            });
         } catch (error) {
-          alert(error);
+            alert(error);
         }
-      };
+    }
     
 
     const handleSelectTypePlante = (typePlante) => {
@@ -39,6 +48,7 @@ function CreatePlante() {
     };
 
     useEffect(() => {
+        GetUserMail() ; 
         axios({
             method: 'GET',
             url: 'http://codx.fr:8080/TypePlantes',
@@ -60,8 +70,10 @@ function CreatePlante() {
         }
 
         let pickerResult = await ImagePicker.launchImageLibraryAsync();
+        const temp=fetch(pickerResult.uri);
+        setImageFTP(temp)
 
-        if (!pickerResult.cancelled) {
+        if (!pickerResult.canceled) {
             setImageUrl(pickerResult.uri); // Enregistre le lien de la photo sélectionnée
 
             // Enregistrer le lien dans le stockage local de l'application
@@ -73,28 +85,27 @@ function CreatePlante() {
         }
     };
 
-    const SubmitPlante = async () => {
-        const selectedPhotoUri = await AsyncStorage.getItem('selectedPhotoUri'); // Récupère l'URL enregistrée
-        GetUserMail()
-        axios
-            .post('http://codx.fr:8080/CreatePlanteByUser/'+UserMail+'/'+Nom+'/'+Description+'/'+selectedTypePlante.idTypePlante, {
-                url: selectedPhotoUri,
-            })
-            .then((resp) => {
-                if (resp.data === 'OK') {
-                    navigation.navigate('Mes Plantes');
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+    function SubmitPlante () {
+        const formData = new FormData()
+        formData.append("image", imageFTP)
+        alert(imageFTP.type.split("/")[1])
+
+        axios.post("http://codx.fr:8080/CreatePlanteByUser/"+User.mail+"/"+Nom+"/"+Description+"/"+selectedTypePlante.idTypePlante+"/"+imageFTP.type.split("/")[1], formData, { headers: {'Content-Type': 'multipart/form-data'}})
+        .then((resp) => {
+            if(resp.data==='OK')
+            {
+                navigation.navigate('MesPlantes')
+            }
+        })
+       
+           
     };
 
     return (
         <View style={{ flex: 1, paddingHorizontal: 20, paddingTop: 100 }}>
             <View>
                 <Text style={{ fontSize: 32, fontWeight: 'bold', color: '#46a094', marginBottom: 20 }}>
-                    Création Plante
+                    Création Plante 
                 </Text>
                 <View style={styles.formContainer}>
                     <View style={styles.photoCard}>
@@ -152,7 +163,7 @@ function CreatePlante() {
                     </View>
 
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity onPress={SubmitPlante} style={styles.button}>
+                        <TouchableOpacity onPress={() => {SubmitPlante()}} style={styles.button}>
                             <Text style={styles.buttonText}>Créer</Text>
                         </TouchableOpacity>
 

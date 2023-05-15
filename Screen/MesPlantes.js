@@ -9,42 +9,47 @@ function MesPlantes() {
     const [PlantesList, setPlantes] = useState([]);
     const navigation = useNavigation();
     const route = useRoute();
-    const [UserMail,setUserMail]=useState("")
+    const [User, setUser] = useState("")
 
 
     const GetUserMail = async () => {
         try {
-          const value = await AsyncStorage.getItem("UserMail");
-          setUserMail(value);
+            const value = await AsyncStorage.getItem("UserMail");
+            axios({
+                method: 'GET',
+                url: "http://codx.fr:8080/GetUserByMail/" + value
+            }).then((resp) => {
+                setUser(resp.data[0])
+            }).catch((err) => {
+                alert(err)
+            });
         } catch (error) {
-          alert(error);
+            alert(error);
         }
-      };
 
+        try {
+            const value = await AsyncStorage.getItem("UserMail");
+            axios
+                .get("http://codx.fr:8080/GetPlantByUser/" + value)
+                .then((response) => {
+                    setPlantes(response.data);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
 
-    useFocusEffect(
-        React.useCallback(() => {
-            fetchPlantes();
-        }, [])
-    );
+        } catch (error) {
+            alert(error);
+        }
+    };
 
-    
+    useEffect(() => {
+        GetUserMail();
+    }, []);
+
 
     const handleModifyPlante = (plante) => {
         navigation.navigate('ModifyPlante', { plante, typesPlante: ListTypePlant });
-    };
-
-    const fetchPlantes = () => {
-        GetUserMail()
-
-        axios
-            .get("http://codx.fr:8080/GetPlantByUser/"+UserMail)
-            .then((response) => {
-                setPlantes(response.data);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
     };
 
     return (

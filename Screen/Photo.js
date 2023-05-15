@@ -14,7 +14,7 @@ function Photo() {
 
     useEffect(() => {
         (async () => {
-            const mediaLibraryStatus = await MediaLibrary.requestCameraPermissionsAsync();
+            const mediaLibraryStatus = await MediaLibrary.requestPermissionsAsync();
             setHasMediaLibraryPermission(mediaLibraryStatus.status === 'granted');
 
             const cameraStatus = await Camera.requestPermissionsAsync();
@@ -26,7 +26,6 @@ function Photo() {
         if (cameraRef.current) {
             try {
                 const data = await cameraRef.current.takePictureAsync();
-                console.log(data);
                 setImage(data.uri);
             } catch (e) {
                 console.log(e);
@@ -38,7 +37,6 @@ function Photo() {
         if (image) {
             try {
                 await MediaLibrary.createAssetAsync(image);
-                alert('Photo sauvegardé!');
                 setImage(null);
             } catch (e) {
                 console.log(e);

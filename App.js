@@ -32,6 +32,7 @@ import LesConseilsPourTypePlantes from "./Screen/LesConseilsPourTypePlantes";
 import MonAnnonceSuivis from "./Screen/MonAnnonceSuivis";
 import MonAnnonceSuivisBotanniste from "./Screen/MonAnnonceSuivisBotanniste";
 import Authentification from "./Screen/Authentification";
+import ResetPasswordFromProfil from "./Screen/ResetPasswordFromProfil"
 import SignUp from "./Screen/SignUp"
 
 
@@ -83,8 +84,21 @@ function Tabs({ navigation }) {
                     </View>)
             }} />
 
+<<<<<<< HEAD
+{
+                User.idRole===1 && 
+                <Tab.Screen name="AddAnnonce" component={AddAnnonce} options={{
+                    tabBarIcon: ({ focused }) => (
+                        <View style={{ alignItems: 'center', justifyContent: 'center', top: 14 }}>
+                            <Image source={require("./assets/icons/Add.png")} resizeMode="contain" style={{ width: 60, height: 60 }} />
+                            <Text style={{ fontSize: 12, color: "#46a094" }}></Text>
+                        </View>)
+                }} />
+           }
+=======
 
 
+>>>>>>> a097a76c4906b093dc1cf62d81430be6faa5ce46
 
             {
                 User.idRole === 1 &&
@@ -107,6 +121,11 @@ function Tabs({ navigation }) {
                         </View>)
                 }} />
             }
+<<<<<<< HEAD
+           
+           
+=======
+>>>>>>> a097a76c4906b093dc1cf62d81430be6faa5ce46
 
             <Tab.Screen name="MonCompte" component={MonCompte} options={{
                 tabBarIcon: ({ focused }) => (
@@ -148,6 +167,7 @@ function App({ navigation }) {
                 <Stack.Screen name="LesConseilsPourTypePlantes" component={LesConseilsPourTypePlantes} />
                 <Stack.Screen name="MonAnnonceSuivis" component={MonAnnonceSuivis} />
                 <Stack.Screen name="MonAnnonceSuivisBotanniste" component={MonAnnonceSuivisBotanniste} />
+                <Stack.Screen name="ResetPasswordFromProfil" component={ResetPasswordFromProfil} />
 
             </Stack.Navigator>
         </NavigationContainer>

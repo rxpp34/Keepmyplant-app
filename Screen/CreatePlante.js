@@ -16,7 +16,9 @@ function CreatePlante() {
     const [imageUrl, setImageUrl] = useState('');
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [selectedTypePlante, setSelectedTypePlante] = useState(null);
-    const [User, setUser] = useState("")
+    const [imageFTP,setImageFTP]=useState()
+    const [UserMail,setUserMail]=useState("")
+    const [User,setUser]=useState()
 
 
     const handleToggleDropdown = () => {
@@ -51,6 +53,7 @@ function CreatePlante() {
     };
 
     useEffect(() => {
+        GetUserMail() ; 
         axios({
             method: 'GET',
             url: 'http://codx.fr:8080/TypePlantes',
@@ -72,8 +75,10 @@ function CreatePlante() {
         }
 
         let pickerResult = await ImagePicker.launchImageLibraryAsync();
+        const temp=fetch(pickerResult.uri);
+        setImageFTP(temp)
 
-        if (!pickerResult.cancelled) {
+        if (!pickerResult.canceled) {
             setImageUrl(pickerResult.uri); // Enregistre le lien de la photo sélectionnée
 
             // Enregistrer le lien dans le stockage local de l'application
@@ -106,7 +111,7 @@ function CreatePlante() {
         <View style={{ flex: 1, paddingHorizontal: 20, paddingTop: 100 }}>
             <View>
                 <Text style={{ fontSize: 32, fontWeight: 'bold', color: '#46a094', marginBottom: 20 }}>
-                    Création Plante
+                    Création Plante 
                 </Text>
                 <View style={styles.formContainer}>
                     <View style={styles.photoCard}>
@@ -164,7 +169,7 @@ function CreatePlante() {
                     </View>
 
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity onPress={SubmitPlante} style={styles.button}>
+                        <TouchableOpacity onPress={() => {SubmitPlante()}} style={styles.button}>
                             <Text style={styles.buttonText}>Créer</Text>
                         </TouchableOpacity>
 
